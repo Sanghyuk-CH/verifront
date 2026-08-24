@@ -1,0 +1,31 @@
+{
+  "name": "verifront",
+  "version": "0.1.0",
+  "description": "프론트엔드 결과물이 맞는지 숫자로 판정하는 CLI",
+  "type": "module",
+  "license": "MIT",
+  "repository": "github:Sanghyuk-CH/verifront",
+  "keywords": [
+    "design-tokens",
+    "css",
+    "design-system",
+    "lint",
+    "cli"
+  ],
+  "author": "Sanghyuk Choi",
+  "scripts": {
+    "test": "npm run verify:self",
+    "verify:self": "tsx scripts/verify-self.ts"
+  },
+  "dependencies": {
+    "culori": "^4.0.2",
+    "postcss": "^8.5.26",
+    "postcss-value-parser": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/culori": "^4.0.1",
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}

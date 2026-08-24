@@ -1,0 +1,11 @@
+/* 모두 토큰과 같은 값. 표현 방식만 다르다. 위반 0 이 나와야 한다. */
+
+.a { color: var(--color-text); background-color: var(--color-surface); }
+.b { color: #3b82f6; background-color: #FFFFFF; }
+.c { color: #3B82F6; background-color: #fff; }
+.d { color: rgb(59, 130, 246); background-color: rgb(255, 255, 255); }
+.e { color: rgb(59 130 246); background-color: rgba(255, 255, 255, 1); }
+.f { color: white; border-color: #ffffffff; }
+.g { color: transparent; background-color: inherit; border-color: currentColor; }
+.h { border: 1px solid #e5e7eb; outline: 2px solid #ef4444; }
+.i { box-shadow: 0 1px 2px #00000040; }

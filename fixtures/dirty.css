@@ -1,0 +1,10 @@
+/* 위반을 심어둔 파일. */
+
+.v1 { color: #3b82f5; }                              /* near: 미세차 */
+.v2 { background-color: #ff0066; }                   /* violation */
+.v3 { color: rgb(59, 130, 245); }                    /* near: rgb 표기 미세차 */
+.v4 { border: 1px solid #3b82f5; }                   /* near: shorthand 안 */
+.v5 { background-color: rgba(59, 130, 246, 0.5); }   /* alpha-variant */
+.v6 { color: #6b7281; }                              /* near: text-muted 와 1 */
+.v7 { color: hsl(217, 91%, 60%); }                   /* near: HSL 왕복 손실 */
+.v8 { background-color: #22c55e; }                   /* violation */
