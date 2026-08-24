@@ -8,3 +8,5 @@
 .v6 { color: #6b7281; }                              /* near: text-muted 와 1 */
 .v7 { color: hsl(217, 91%, 60%); }                   /* near: HSL 왕복 손실 */
 .v8 { background-color: #22c55e; }                   /* violation */
+.v9 { background-color: var(--color-badge-bg); }    /* unknown-token */
+.v10 { color: var(--color-primary, #3b82f5); }      /* near: 폴백 값 */

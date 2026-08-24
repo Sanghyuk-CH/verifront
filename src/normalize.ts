@@ -27,7 +27,6 @@ export type Normalized =
 export function normalize(raw: string): Normalized {
   const s = raw.trim();
   if (LITERALS.has(s.toLowerCase())) return { kind: 'literal', raw: s };
-  if (s.startsWith('var(')) return { kind: 'literal', raw: s };
 
   const parsed = parse(s);
   if (!parsed) return { kind: 'unparsable', raw: s };

@@ -1,4 +1,14 @@
 {
-  "clean.css": { "near": 0, "violation": 0, "alpha-variant": 0 },
-  "dirty.css": { "near": 5, "violation": 2, "alpha-variant": 1 }
+  "clean.css": {
+    "near": 0,
+    "violation": 0,
+    "alpha-variant": 0,
+    "unknown-token": 0
+  },
+  "dirty.css": {
+    "near": 6,
+    "violation": 2,
+    "alpha-variant": 1,
+    "unknown-token": 1
+  }
 }

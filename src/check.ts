@@ -33,7 +33,7 @@ export const DEFAULT_PROPS = [
 
 export const EFFECT_PROPS = ['box-shadow', 'text-shadow', 'background-image', 'background'];
 
-export type Verdict = 'ok' | 'near' | 'violation' | 'alpha-variant';
+export type Verdict = 'ok' | 'near' | 'violation' | 'alpha-variant' | 'unknown-token';
 
 export interface Finding {
   file: string;
@@ -48,6 +48,8 @@ export interface Finding {
 
 export interface Token {
   name: string;
+  /** 토큰 이름에 대응하는 CSS 커스텀 프로퍼티. color.primary -> --color-primary */
+  cssVar: string;
   value: string;
   rgb: Rgb;
 }
@@ -58,27 +60,46 @@ export function loadTokens(json: Record<string, Record<string, string>>): Token[
     for (const [name, value] of Object.entries(entries)) {
       const n = normalize(value);
       if (n.kind !== 'color') continue;
-      out.push({ name: `${group}.${name}`, value, rgb: n.rgb });
+      out.push({
+        name: `${group}.${name}`,
+        cssVar: `--${group}-${name}`.toLowerCase(),
+        value,
+        rgb: n.rgb,
+      });
     }
   }
   return out;
 }
 
-function extractColorCandidates(value: string): string[] {
-  const found: string[] = [];
+interface Candidates {
+  colors: string[];
+  /** 참조된 커스텀 프로퍼티 이름 */
+  varRefs: string[];
+}
+
+function extractCandidates(value: string): Candidates {
+  const colors: string[] = [];
+  const varRefs: string[] = [];
+
   valueParser(value).walk((node) => {
     if (node.type === 'function') {
-      if (node.value === 'var') return false;
+      if (node.value === 'var') {
+        const name = node.nodes.find((n) => n.type === 'word' && n.value.startsWith('--'));
+        if (name) varRefs.push(name.value.toLowerCase());
+        // 폴백 값은 실제로 렌더링될 수 있으므로 계속 훑는다: var(--x, #3b82f5)
+        return true;
+      }
       if (/^(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)$/i.test(node.value)) {
-        found.push(valueParser.stringify(node));
+        colors.push(valueParser.stringify(node));
         return false;
       }
       return true;
     }
-    if (node.type === 'word') found.push(node.value);
+    if (node.type === 'word' && !node.value.startsWith('--')) colors.push(node.value);
     return true;
   });
-  return found;
+
+  return { colors, varRefs };
 }
 
 function judge(rgb: Rgb, tokens: Token[]): Omit<Finding, 'file' | 'line' | 'prop' | 'raw'> {
@@ -116,12 +137,28 @@ export function checkCss(
 
   postcss.parse(css).walkDecls((decl) => {
     if (!props.has(decl.prop.toLowerCase())) return;
-    for (const candidate of extractColorCandidates(decl.value)) {
+    const line = decl.source?.start?.line ?? 0;
+    const { colors, varRefs } = extractCandidates(decl.value);
+
+    for (const ref of varRefs) {
+      const known = tokens.find((t) => t.cssVar === ref);
+      if (known) continue;
+      // 토큰에 없는 커스텀 프로퍼티. 값이 무엇인지 알 수 없으므로 검사가 불가능하다.
+      findings.push({
+        file,
+        line,
+        prop: decl.prop,
+        raw: `var(${ref})`,
+        verdict: 'unknown-token',
+      });
+    }
+
+    for (const candidate of colors) {
       const n = normalize(candidate);
       if (n.kind !== 'color') continue; // 리터럴·키워드·파싱 불가는 조용히 넘어간다
       findings.push({
         file,
-        line: decl.source?.start?.line ?? 0,
+        line,
         prop: decl.prop,
         raw: candidate,
         ...judge(n.rgb, tokens),
@@ -134,5 +171,5 @@ export function checkCss(
 
 /** 종료 코드에 반영할 위반. alpha-variant 는 리포트만 하고 실패로 치지 않는다. */
 export function isFailure(f: Finding): boolean {
-  return f.verdict === 'near' || f.verdict === 'violation';
+  return f.verdict === 'near' || f.verdict === 'violation' || f.verdict === 'unknown-token';
 }

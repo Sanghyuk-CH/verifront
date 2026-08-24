@@ -13,15 +13,20 @@ let failed = false;
 
 for (const [file, exp] of Object.entries(expected) as [string, Record<Counted, number>][]) {
   const findings = checkCss(fs.readFileSync(path.join(dir, file), 'utf8'), file, tokens);
-  const actual: Record<Counted, number> = { near: 0, violation: 0, 'alpha-variant': 0 };
-  for (const f of findings) if (f.verdict !== 'ok') actual[f.verdict]++;
-
+  // 집계 대상은 expected.json 이 정한다. 판정이 늘어도 여기를 고칠 일이 없다.
   const keys = Object.keys(exp) as Counted[];
-  const mismatch = keys.filter((k) => exp[k] !== actual[k]);
+  const actual = new Map<Counted, number>(keys.map((k) => [k, 0]));
+  for (const f of findings) {
+    if (f.verdict === 'ok') continue;
+    const prev = actual.get(f.verdict);
+    if (prev !== undefined) actual.set(f.verdict, prev + 1);
+  }
+
+  const mismatch = keys.filter((k) => exp[k] !== actual.get(k));
   console.log(`${mismatch.length ? '✗' : '✓'} ${file}`);
   for (const k of keys) {
     const mark = mismatch.includes(k) ? '  ←' : '';
-    console.log(`    ${k.padEnd(14)} 기대 ${exp[k]}  실제 ${actual[k]}${mark}`);
+    console.log(`    ${k.padEnd(14)} 기대 ${exp[k]}  실제 ${actual.get(k)}${mark}`);
   }
   if (mismatch.length) {
     failed = true;
