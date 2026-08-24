@@ -1,6 +1,6 @@
 import postcss from 'postcss';
 import valueParser from 'postcss-value-parser';
-import { normalize, sameRgb, sameAlpha, perceptualDistance } from './normalize.js';
+import { normalize, sameRgb, sameAlpha, perceptualDistance } from './normalize.ts';
 import type { Rgb } from 'culori';
 
 /** ΔE00 1.0 미만은 표준적인 육안 구분 한계. 그 아래를 미세차로 본다. */

@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { checkCss, loadTokens, type Verdict } from '../src/check.js';
+import { checkCss, loadTokens, type Verdict } from '../src/check.ts';
 
 /** expected.json 이 세는 판정. 'ok' 는 집계 대상이 아니다. */
 type Counted = Exclude<Verdict, 'ok'>;
