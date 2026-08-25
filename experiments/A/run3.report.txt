@@ -1,7 +1,6 @@
   88  background         var(--surface-page) → oklch(0.977 0.004 255) near           color.surface-raised ΔE 0.97
   89  color              var(--text-body) → oklch(0.505 0.024 255) violation      color.text-muted ΔE 5.3
  110  color              var(--text-meta) → oklch(0.665 0.018 255) violation      color.disabled-fg ΔE 4.79
- 126  background         var(--surface-card) → oklch(1 0 0) near           color.surface ΔE 0
  127  border             var(--border-card) → oklch(0.9 0.008 255) violation      color.border ΔE 2.18
  135  border-color       var(--border-card-hover) → oklch(0.535 0.155 265) violation      color.primary-hover ΔE 4.39
  160  background         var(--badge-active-surface) → oklch(0.95 0.05 85) violation      color.warning-soft ΔE 7.32
@@ -19,9 +18,7 @@
  223  border-top         var(--divider-card) → oklch(0.948 0.006 255) violation      color.border ΔE 1.53
  244  outline            var(--focus-ring) → oklch(0.535 0.155 265) violation      color.primary-hover ΔE 4.39
  249  background         var(--button-primary-surface) → oklch(0.465 0.15 265) violation      color.primary-hover ΔE 9.48
- 250  color              var(--button-primary-text) → oklch(1 0 0) near           color.surface ΔE 0
  254  background         var(--button-primary-surface-hover) → oklch(0.4 0.135 265) violation      color.primary-hover ΔE 15.61
- 258  background         var(--button-secondary-surface) → oklch(1 0 0) near           color.surface ΔE 0
  259  border-color       var(--button-secondary-border) → oklch(0.845 0.01 255) violation      color.disabled ΔE 2.09
  260  color              var(--button-secondary-text) → oklch(0.33 0.028 255) violation      color.text ΔE 9.85
  264  background         var(--button-secondary-surface-hover) → oklch(0.935 0.035 265) violation      color.border ΔE 8.07

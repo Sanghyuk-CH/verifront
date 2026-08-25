@@ -3,7 +3,6 @@
  102  color              var(--color-page-title) → oklch(0.24 0.028 255) violation      color.text ΔE 3.72
  110  color              var(--color-page-caption) → oklch(0.585 0.018 255) violation      color.text-muted ΔE 4.59
  127  border             var(--color-card-border) → oklch(0.925 0.006 255) near           color.border ΔE 0.52
- 129  background         var(--color-card-surface) → oklch(1 0 0) near           color.surface ΔE 0
  139  background         var(--color-card-accent) → oklch(0.545 0.105 72) violation      color.warning ΔE 16.12
  143  border-color       var(--color-card-border-hover) → oklch(0.78 0.014 255) violation      color.disabled-fg ΔE 6.18
  169  background         var(--color-badge-progress-bg) → oklch(0.935 0.035 258) violation      color.border ΔE 7.93
@@ -19,9 +18,7 @@
  219  border-top         var(--color-card-divider) → oklch(0.925 0.006 255) near           color.border ΔE 0.52
  240  outline            var(--color-focus-ring) → oklch(0.475 0.128 258) violation      color.primary-hover ΔE 9.31
  245  background         var(--color-btn-primary-bg) → oklch(0.475 0.128 258) violation      color.primary-hover ΔE 9.31
- 246  color              var(--color-btn-primary-text) → oklch(1 0 0) near           color.surface ΔE 0
  250  background         var(--color-btn-primary-bg-hover) → oklch(0.395 0.118 258) violation      color.primary-hover ΔE 15.92
- 254  background         var(--color-btn-ghost-bg) → oklch(1 0 0) near           color.surface ΔE 0
  255  border-color       var(--color-btn-ghost-border) → oklch(0.865 0.01 255) near           color.disabled ΔE 0.61
  256  color              var(--color-btn-ghost-text) → oklch(0.44 0.022 255) violation      color.text-muted ΔE 11.65
  260  background         var(--color-btn-ghost-bg-hover) → oklch(0.978 0.004 255) near           color.surface-raised ΔE 0.94

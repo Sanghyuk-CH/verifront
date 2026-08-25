@@ -1,6 +1,13 @@
-import { parse, differenceCiede2000, type Rgb } from 'culori';
+import { parse, converter, differenceCiede2000, type Rgb } from 'culori';
 
 const deltaE = differenceCiede2000();
+
+/**
+ * culori 의 parse 는 입력 표기의 색 공간 객체를 그대로 돌려준다.
+ * oklch(...) 는 {mode:'oklch', l, c, h} 이지 {r, g, b} 가 아니다.
+ * 변환하지 않고 Rgb 로 읽으면 모든 비 sRGB 색이 검정이 된다.
+ */
+const toRgb = converter('rgb');
 
 /**
  * 검사 대상에서 제외하는 값.
@@ -8,16 +15,7 @@ const deltaE = differenceCiede2000();
  * 이 목록을 파서보다 반드시 먼저 통과시켜야 한다.
  * 그러지 않으면 transparent 가 "검정과 알파만 다른 값"으로 판정된다.
  */
-const LITERALS = new Set([
-  'transparent',
-  'currentcolor',
-  'inherit',
-  'initial',
-  'unset',
-  'revert',
-  'none',
-  'auto',
-]);
+const LITERALS = new Set(['transparent', 'currentcolor', 'inherit', 'initial', 'unset', 'revert', 'none', 'auto']);
 
 export type Normalized =
   | { kind: 'literal'; raw: string }
@@ -31,7 +29,8 @@ export function normalize(raw: string): Normalized {
   const parsed = parse(s);
   if (!parsed) return { kind: 'unparsable', raw: s };
 
-  const rgb = parsed as Rgb;
+  const rgb = toRgb(parsed);
+  if (!rgb) return { kind: 'unparsable', raw: s };
   return { kind: 'color', raw: s, rgb: { ...rgb, alpha: rgb.alpha ?? 1 } };
 }
 
