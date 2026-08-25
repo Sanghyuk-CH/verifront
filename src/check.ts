@@ -85,8 +85,14 @@ function extractCandidates(value: string): Candidates {
     if (node.type === 'function') {
       if (node.value === 'var') {
         const name = node.nodes.find((n) => n.type === 'word' && n.value.startsWith('--'));
+        // 폴백을 보고 이 참조가 색 토큰인지 판단한다.
+        // var(--mx, 50%) 처럼 폴백이 색이 아니면 색 토큰이 아니다.
+        const div = node.nodes.findIndex((n) => n.type === 'div' && n.value === ',');
+        if (div !== -1) {
+          const fb = valueParser.stringify(node.nodes.slice(div + 1)).trim();
+          if (normalize(fb).kind !== 'color') return false;
+        }
         if (name) varRefs.push(name.value.toLowerCase());
-        // 폴백 값은 실제로 렌더링될 수 있으므로 계속 훑는다: var(--x, #3b82f5)
         return true;
       }
       if (/^(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)$/i.test(node.value)) {
