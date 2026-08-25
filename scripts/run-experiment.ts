@@ -77,6 +77,10 @@ for (const condition of ['A', 'B']) {
   const sub = rows.filter((r) => r.condition === condition);
   if (!sub.length) continue;
   const total = sub.reduce((s, r) => s + r.declarations, 0);
+  if (total === 0) {
+    console.log(`조건 ${condition}  회차 ${sub.length}  색 선언이 0건이다. 생성물이 비었거나 검사 대상 속성이 없다.`);
+    continue;
+  }
   const sum = Object.fromEntries(VERDICTS.map((v) => [v, sub.reduce((s, r) => s + r.counts[v], 0)])) as Record<
     Verdict,
     number

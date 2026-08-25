@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>프로젝트</title>
+    <style>
+      :root {
+        --color-surface: #ffffff;
+        --color-surface-raised: #f9fafb;
+        --color-border: #e5e7eb;
+        --color-text: #111827;
+        --color-text-muted: #6b7280;
+        --color-primary: #3b82f6;
+        --color-primary-hover: #2563eb;
+        --color-primary-fg: #ffffff;
+        --color-success: #16a34a;
+        --color-success-soft: #dcfce7;
+        --color-warning: #ca8a04;
+        --color-warning-soft: #fef9c3;
+        --color-disabled: #d1d5db;
+        --color-disabled-fg: #9ca3af;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 48px 24px;
+        background: var(--color-surface-raised);
+        color: var(--color-text);
+        font-family:
+          system-ui,
+          -apple-system,
+          'Apple SD Gothic Neo',
+          'Malgun Gothic',
+          sans-serif;
+        line-height: 1.6;
+      }
+
+      .card-list {
+        width: 520px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        padding: 20px 22px 16px;
+        transition: border-color 0.15s ease;
+      }
+
+      .card:hover {
+        border-color: var(--color-primary);
+      }
+
+      /* 상태 배지 */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .badge--active {
+        background: var(--color-surface-raised);
+        color: var(--color-primary);
+        box-shadow: inset 0 0 0 1px var(--color-primary);
+      }
+
+      .badge--done {
+        background: var(--color-success-soft);
+        color: var(--color-success);
+      }
+
+      .badge--hold {
+        background: var(--color-warning-soft);
+        color: var(--color-warning);
+      }
+
+      /* 본문 */
+      .card__title {
+        margin: 12px 0 6px;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      .card__desc {
+        margin: 0;
+        font-size: 14px;
+        color: var(--color-text-muted);
+        display: -webkit-box;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .card__meta {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--color-text-muted);
+      }
+
+      .card__meta span + span::before {
+        content: '·';
+        margin: 0 6px;
+      }
+
+      /* 하단 구분선 + 액션 */
+      .card__actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid var(--color-border);
+      }
+
+      .btn {
+        padding: 7px 16px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background-color 0.15s ease,
+          border-color 0.15s ease;
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      .btn--primary {
+        background: var(--color-primary);
+        color: var(--color-primary-fg);
+      }
+
+      .btn--primary:hover {
+        background: var(--color-primary-hover);
+      }
+
+      .btn--secondary {
+        background: var(--color-surface);
+        border-color: var(--color-border);
+        color: var(--color-text);
+      }
+
+      .btn--secondary:hover {
+        border-color: var(--color-text-muted);
+      }
+
+      .btn--secondary:disabled {
+        background: var(--color-surface-raised);
+        border-color: var(--color-disabled);
+        color: var(--color-disabled-fg);
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-list">
+      <article class="card">
+        <span class="badge badge--active">진행중</span>
+        <h3 class="card__title">결제 API 마이그레이션</h3>
+        <p class="card__desc">
+          기존 결제 모듈을 신규 게이트웨이로 옮기는 작업입니다. 환불과 부분 취소 흐름은 아직 이전 엔드포인트를 함께
+          씁니다.
+        </p>
+        <div class="card__meta"><span>김서연</span><span>2026년 8월 21일 수정</span></div>
+        <div class="card__actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button">보관</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="badge badge--done">완료</span>
+        <h3 class="card__title">온보딩 이메일 개편</h3>
+        <p class="card__desc">
+          가입 후 첫 7일 동안 나가는 메일 다섯 통을 세 통으로 줄였습니다. 전환율은 이전 대비 12% 올랐고 해지 요청은
+          그대로입니다.
+        </p>
+        <div class="card__meta"><span>박도현</span><span>2026년 8월 9일 수정</span></div>
+        <div class="card__actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button">보관</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="badge badge--hold">보류</span>
+        <h3 class="card__title">재고 대시보드 v2</h3>
+        <p class="card__desc">
+          창고별 실시간 수량을 한 화면에서 보려던 개편입니다. 물류팀 데이터 이관 일정이 밀리면서 4분기까지 멈춰 둡니다.
+        </p>
+        <div class="card__meta"><span>이지훈</span><span>2026년 7월 30일 수정</span></div>
+        <div class="card__actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button" disabled>보관</button>
+        </div>
+      </article>
+    </div>
+  </body>
+</html>

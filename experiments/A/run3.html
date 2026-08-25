@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>프로젝트</title>
+    <style>
+      /* ============================================================
+   1단계 — 원시 토큰 (raw palette)
+   색 리터럴은 오직 이 블록에만 존재합니다.
+   hex/rgb 대신 oklch 표기를 씁니다.
+   ============================================================ */
+      :root {
+        --palette-paper: oklch(1 0 0);
+
+        --palette-mist-050: oklch(0.977 0.004 255);
+        --palette-mist-100: oklch(0.948 0.006 255);
+        --palette-mist-200: oklch(0.9 0.008 255);
+        --palette-mist-300: oklch(0.845 0.01 255);
+
+        --palette-slate-400: oklch(0.665 0.018 255);
+        --palette-slate-600: oklch(0.505 0.024 255);
+        --palette-slate-800: oklch(0.33 0.028 255);
+        --palette-slate-900: oklch(0.248 0.03 255);
+
+        --palette-indigo-100: oklch(0.935 0.035 265);
+        --palette-indigo-500: oklch(0.535 0.155 265);
+        --palette-indigo-600: oklch(0.465 0.15 265);
+        --palette-indigo-700: oklch(0.4 0.135 265);
+
+        --palette-amber-100: oklch(0.95 0.05 85);
+        --palette-amber-500: oklch(0.72 0.145 75);
+        --palette-amber-700: oklch(0.51 0.105 65);
+
+        --palette-jade-100: oklch(0.945 0.04 165);
+        --palette-jade-500: oklch(0.625 0.105 165);
+        --palette-jade-700: oklch(0.46 0.085 165);
+      }
+
+      /* ============================================================
+   2단계 — 의미 토큰 (semantic)
+   아래 모든 규칙은 이 토큰만 참조합니다.
+   ============================================================ */
+      :root {
+        --surface-page: var(--palette-mist-050);
+        --surface-card: var(--palette-paper);
+
+        --border-card: var(--palette-mist-200);
+        --border-card-hover: var(--palette-indigo-500);
+        --divider-card: var(--palette-mist-100);
+
+        --text-title: var(--palette-slate-900);
+        --text-body: var(--palette-slate-600);
+        --text-meta: var(--palette-slate-400);
+
+        --badge-active-surface: var(--palette-amber-100);
+        --badge-active-text: var(--palette-amber-700);
+        --badge-active-marker: var(--palette-amber-500);
+
+        --badge-done-surface: var(--palette-jade-100);
+        --badge-done-text: var(--palette-jade-700);
+        --badge-done-marker: var(--palette-jade-500);
+
+        --badge-hold-surface: var(--palette-mist-100);
+        --badge-hold-text: var(--palette-slate-600);
+        --badge-hold-marker: var(--palette-slate-400);
+
+        --button-primary-surface: var(--palette-indigo-600);
+        --button-primary-surface-hover: var(--palette-indigo-700);
+        --button-primary-text: var(--palette-paper);
+
+        --button-secondary-surface: var(--palette-paper);
+        --button-secondary-surface-hover: var(--palette-indigo-100);
+        --button-secondary-border: var(--palette-mist-300);
+        --button-secondary-text: var(--palette-slate-800);
+
+        --button-disabled-surface: var(--palette-mist-100);
+        --button-disabled-border: var(--palette-mist-200);
+        --button-disabled-text: var(--palette-slate-400);
+
+        --focus-ring: var(--palette-indigo-500);
+      }
+
+      /* ============================================================
+   기본
+   ============================================================ */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 56px 24px;
+        background: var(--surface-page);
+        color: var(--text-body);
+        font-family:
+          'Pretendard',
+          'Apple SD Gothic Neo',
+          'Noto Sans KR',
+          system-ui,
+          -apple-system,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .board {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .board__title {
+        margin: 0 0 20px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--text-meta);
+      }
+
+      .cards {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      /* ============================================================
+   카드
+   ============================================================ */
+      .card {
+        background: var(--surface-card);
+        border: 1px solid var(--border-card);
+        border-radius: 14px;
+        padding: 22px 24px 18px;
+        transition: border-color 140ms ease;
+      }
+
+      .card:hover,
+      .card:focus-within {
+        border-color: var(--border-card-hover);
+      }
+
+      /* 상태 배지 */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px 4px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        line-height: 1;
+      }
+
+      .badge::before {
+        content: '';
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      .badge--active {
+        background: var(--badge-active-surface);
+        color: var(--badge-active-text);
+      }
+      .badge--done {
+        background: var(--badge-done-surface);
+        color: var(--badge-done-text);
+      }
+      .badge--hold {
+        background: var(--badge-hold-surface);
+        color: var(--badge-hold-text);
+      }
+
+      .badge--active::before {
+        background: var(--badge-active-marker);
+      }
+      .badge--done::before {
+        background: var(--badge-done-marker);
+      }
+      .badge--hold::before {
+        background: var(--badge-hold-marker);
+      }
+
+      /* 제목 · 설명 */
+      .card__title {
+        margin: 12px 0 6px;
+        font-size: 17px;
+        font-weight: 600;
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+        color: var(--text-title);
+      }
+
+      .card__desc {
+        margin: 0;
+        font-size: 14.5px;
+        line-height: 1.65;
+        color: var(--text-body);
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        overflow: hidden;
+      }
+
+      /* 메타 줄 */
+      .card__meta {
+        margin-top: 12px;
+        font-size: 12.5px;
+        line-height: 1;
+        color: var(--text-meta);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .card__meta-sep {
+        margin: 0 6px;
+      }
+
+      /* 구분선 + 버튼 줄 */
+      .card__actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 18px;
+        padding-top: 14px;
+        border-top: 1px solid var(--divider-card);
+      }
+
+      /* ============================================================
+   버튼
+   ============================================================ */
+      .btn {
+        font: inherit;
+        font-size: 13.5px;
+        font-weight: 600;
+        line-height: 1;
+        padding: 9px 16px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition:
+          background-color 140ms ease,
+          border-color 140ms ease;
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      .btn--primary {
+        background: var(--button-primary-surface);
+        color: var(--button-primary-text);
+      }
+
+      .btn--primary:hover {
+        background: var(--button-primary-surface-hover);
+      }
+
+      .btn--secondary {
+        background: var(--button-secondary-surface);
+        border-color: var(--button-secondary-border);
+        color: var(--button-secondary-text);
+      }
+
+      .btn--secondary:hover:not(:disabled) {
+        background: var(--button-secondary-surface-hover);
+      }
+
+      .btn:disabled {
+        background: var(--button-disabled-surface);
+        border-color: var(--button-disabled-border);
+        color: var(--button-disabled-text);
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <h1 class="board__title">프로젝트 3개</h1>
+
+      <ul class="cards">
+        <li class="card">
+          <span class="badge badge--active">진행중</span>
+          <h3 class="card__title">결제 모듈 리팩터링</h3>
+          <p class="card__desc">
+            PG 연동 코드를 결제 수단별로 분리하고 실패 응답 처리를 한곳으로 모읍니다. 8월 말 배포를 목표로 QA 시나리오를
+            정리하는 중입니다.
+          </p>
+          <p class="card__meta">김도현<span class="card__meta-sep" aria-hidden="true">·</span>2026년 8월 24일 수정</p>
+          <div class="card__actions">
+            <button type="button" class="btn btn--primary">열기</button>
+            <button type="button" class="btn btn--secondary">보관</button>
+          </div>
+        </li>
+
+        <li class="card">
+          <span class="badge badge--done">완료</span>
+          <h3 class="card__title">온보딩 이메일 3단계 개편</h3>
+          <p class="card__desc">
+            가입 직후, 3일차, 7일차 메일을 다시 쓰고 발송 시점을 조정했습니다. 첫 주 열람률이 이전 대비 18% 올랐습니다.
+          </p>
+          <p class="card__meta">박서윤<span class="card__meta-sep" aria-hidden="true">·</span>2026년 8월 11일 수정</p>
+          <div class="card__actions">
+            <button type="button" class="btn btn--primary">열기</button>
+            <button type="button" class="btn btn--secondary">보관</button>
+          </div>
+        </li>
+
+        <li class="card">
+          <span class="badge badge--hold">보류</span>
+          <h3 class="card__title">디자인 토큰 문서화</h3>
+          <p class="card__desc">
+            제품 전반의 색상과 여백 값을 토큰으로 정리하는 작업입니다. 디자인 시스템 개편 일정이 확정될 때까지 멈춰
+            둡니다.
+          </p>
+          <p class="card__meta">이한결<span class="card__meta-sep" aria-hidden="true">·</span>2026년 7월 29일 수정</p>
+          <div class="card__actions">
+            <button type="button" class="btn btn--primary">열기</button>
+            <button type="button" class="btn btn--secondary" disabled>보관</button>
+          </div>
+        </li>
+      </ul>
+    </main>
+  </body>
+</html>

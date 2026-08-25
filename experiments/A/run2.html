@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>프로젝트</title>
+    <style>
+      /* ───────── 1. 원시 토큰 (색 원본값은 여기에만 존재) ───────── */
+      :root {
+        --ink-900: oklch(0.24 0.032 265);
+        --ink-600: oklch(0.52 0.022 265);
+        --ink-400: oklch(0.66 0.016 265);
+
+        --paper-0: oklch(0.995 0.002 250);
+        --paper-100: oklch(0.965 0.006 250);
+        --line-200: oklch(0.905 0.009 255);
+
+        --indigo-050: oklch(0.955 0.028 275);
+        --indigo-500: oklch(0.52 0.155 275);
+        --indigo-600: oklch(0.44 0.155 275);
+
+        --teal-050: oklch(0.958 0.028 178);
+        --teal-500: oklch(0.52 0.085 178);
+
+        --ochre-050: oklch(0.962 0.038 80);
+        --ochre-500: oklch(0.56 0.105 72);
+
+        --focus: oklch(0.55 0.18 265);
+      }
+
+      /* ───────── 2. 의미 토큰 (컴포넌트는 이것만 참조) ───────── */
+      :root {
+        --color-canvas: var(--paper-100);
+        --color-surface: var(--paper-0);
+        --color-border: var(--line-200);
+        --color-divider: var(--line-200);
+
+        --color-text: var(--ink-900);
+        --color-text-muted: var(--ink-600);
+        --color-text-subtle: var(--ink-400);
+
+        --color-action: var(--indigo-500);
+        --color-action-hover: var(--indigo-600);
+        --color-on-action: var(--paper-0);
+
+        --color-disabled-text: var(--ink-400);
+        --color-disabled-line: var(--line-200);
+
+        --color-focus-ring: var(--focus);
+
+        /* 카드마다 상태 색으로 덮어쓰는 지역 토큰 */
+        --card-accent: var(--indigo-500);
+        --card-accent-wash: var(--indigo-050);
+      }
+
+      /* ───────── 3. 레이아웃 ───────── */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 56px 32px;
+        background: var(--color-canvas);
+        color: var(--color-text);
+        font-family:
+          'Pretendard Variable',
+          Pretendard,
+          -apple-system,
+          'Apple SD Gothic Neo',
+          'Noto Sans KR',
+          system-ui,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .board {
+        width: 560px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .board-title {
+        margin: 0 0 4px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        color: var(--color-text-subtle);
+      }
+
+      /* ───────── 4. 카드 ───────── */
+      .card {
+        position: relative;
+        padding: 22px 24px 18px 28px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: border-color 160ms ease;
+      }
+
+      /* 상태를 카드 왼쪽 모서리까지 끌고 내려오는 레일 */
+      .card::before {
+        content: '';
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 4px;
+        background: var(--card-accent);
+      }
+
+      .card:hover {
+        border-color: var(--card-accent);
+      }
+
+      .card--active {
+        --card-accent: var(--indigo-500);
+        --card-accent-wash: var(--indigo-050);
+      }
+      .card--done {
+        --card-accent: var(--teal-500);
+        --card-accent-wash: var(--teal-050);
+      }
+      .card--onhold {
+        --card-accent: var(--ochre-500);
+        --card-accent-wash: var(--ochre-050);
+      }
+
+      /* ───────── 5. 카드 내부 ───────── */
+      .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--card-accent-wash);
+        color: var(--card-accent);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .card-title {
+        margin: 12px 0 8px;
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--color-text);
+      }
+
+      .card-desc {
+        margin: 0;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        overflow: hidden;
+        font-size: 14px;
+        line-height: 1.65;
+        color: var(--color-text-muted);
+      }
+
+      .meta {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--color-text-subtle);
+      }
+
+      .meta-sep {
+        margin: 0 6px;
+      }
+
+      .divider {
+        height: 1px;
+        margin: 16px 0 14px;
+        background: var(--color-divider);
+      }
+
+      /* ───────── 6. 버튼 ───────── */
+      .actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 8px 18px;
+        border-radius: 7px;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background-color 140ms ease,
+          color 140ms ease;
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid var(--color-focus-ring);
+        outline-offset: 2px;
+      }
+
+      .btn--primary {
+        border: 1px solid var(--color-action);
+        background: var(--color-action);
+        color: var(--color-on-action);
+      }
+
+      .btn--primary:hover {
+        background: var(--color-action-hover);
+        border-color: var(--color-action-hover);
+      }
+
+      .btn--secondary {
+        border: 1px solid var(--color-border);
+        background: var(--color-surface);
+        color: var(--color-text-muted);
+      }
+
+      .btn--secondary:hover {
+        background: var(--color-canvas);
+        color: var(--color-text);
+      }
+
+      .btn:disabled {
+        border-color: var(--color-disabled-line);
+        background: var(--color-surface);
+        color: var(--color-disabled-text);
+        cursor: not-allowed;
+      }
+
+      .btn:disabled:hover {
+        background: var(--color-surface);
+        color: var(--color-disabled-text);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <h2 class="board-title">프로젝트</h2>
+
+      <article class="card card--active">
+        <span class="badge">진행중</span>
+        <h3 class="card-title">온보딩 플로우 재설계</h3>
+        <p class="card-desc">
+          가입 직후 첫 화면까지의 단계를 다섯 개에서 세 개로 줄이는 작업. 이탈이 가장 많이 발생하는 이메일 인증 구간을
+          나중으로 미루는 방향을 검토 중이다.
+        </p>
+        <p class="meta">서지현<span class="meta-sep">·</span>2026년 8월 21일 수정</p>
+        <div class="divider"></div>
+        <div class="actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button">보관</button>
+        </div>
+      </article>
+
+      <article class="card card--done">
+        <span class="badge">완료</span>
+        <h3 class="card-title">결제 실패 안내 문구 정리</h3>
+        <p class="card-desc">
+          카드사 응답 코드마다 제각각이던 오류 메시지를 여섯 가지 유형으로 통합했다. 각 문구는 무엇이 잘못됐고 다음에
+          무엇을 해야 하는지를 한 줄로 알려준다.
+        </p>
+        <p class="meta">문태윤<span class="meta-sep">·</span>2026년 8월 14일 수정</p>
+        <div class="divider"></div>
+        <div class="actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button">보관</button>
+        </div>
+      </article>
+
+      <article class="card card--onhold">
+        <span class="badge">보류</span>
+        <h3 class="card-title">관리자 권한 모델 개편</h3>
+        <p class="card-desc">
+          역할 기반 권한을 조직 단위로 쪼개려던 계획. 감사 로그 스펙이 먼저 확정돼야 해서 다음 분기까지 멈춰 두기로
+          했다.
+        </p>
+        <p class="meta">강은채<span class="meta-sep">·</span>2026년 6월 30일 수정</p>
+        <div class="divider"></div>
+        <div class="actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button" disabled>보관</button>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
