@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>프로젝트 카드 리스트</title>
+    <style>
+      /* ── 디자인 토큰 정의 ─────────────────────────────
+     이 블록이 hex 값을 쓰는 유일한 곳이다.
+     아래 모든 스타일은 var(--color-*) 만 참조한다. */
+      :root {
+        --color-surface: #ffffff;
+        --color-surface-raised: #f9fafb;
+        --color-border: #e5e7eb;
+        --color-text: #111827;
+        --color-text-muted: #6b7280;
+        --color-primary: #3b82f6;
+        --color-primary-fg: #ffffff;
+        --color-success: #16a34a;
+        --color-success-soft: #dcfce7;
+        --color-warning: #ca8a04;
+        --color-warning-soft: #fef9c3;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 40px 24px;
+        background: var(--color-surface-raised);
+        color: var(--color-text);
+        font-family:
+          'Pretendard',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Apple SD Gothic Neo',
+          'Malgun Gothic',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── 리스트 ───────────────────────────────────── */
+      .card-list {
+        width: 420px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      /* ── 카드 ─────────────────────────────────────── */
+      .card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        padding: 20px;
+        transition: border-color 150ms ease;
+      }
+
+      .card:hover {
+        border-color: var(--color-primary);
+      }
+
+      /* ── 상태 배지 ─────────────────────────────────── */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+        letter-spacing: 0.01em;
+      }
+
+      .badge--active {
+        background: var(--color-surface-raised);
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+      }
+
+      .badge--done {
+        background: var(--color-success-soft);
+        color: var(--color-success);
+      }
+
+      .badge--hold {
+        background: var(--color-warning-soft);
+        color: var(--color-warning);
+      }
+
+      /* ── 본문 ─────────────────────────────────────── */
+      .card__title {
+        margin: 12px 0 0;
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--color-text);
+      }
+
+      .card__desc {
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--color-text-muted);
+
+        /* 설명은 2줄까지만 노출 */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* ── 메타 줄 ──────────────────────────────────── */
+      .card__meta {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--color-text-muted);
+      }
+
+      .card__meta span + span::before {
+        content: '·';
+        margin: 0 6px;
+      }
+
+      /* ── 구분선 ───────────────────────────────────── */
+      .card__divider {
+        height: 1px;
+        margin: 16px 0;
+        background: var(--color-border);
+      }
+
+      /* ── 버튼 ─────────────────────────────────────── */
+      .card__actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background-color 150ms ease,
+          border-color 150ms ease;
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      .btn--primary {
+        background: var(--color-primary);
+        color: var(--color-primary-fg);
+      }
+
+      .btn--primary:hover {
+        background: var(--color-text);
+      }
+
+      .btn--secondary {
+        background: var(--color-surface);
+        border-color: var(--color-border);
+        color: var(--color-text);
+      }
+
+      .btn--secondary:hover {
+        background: var(--color-surface-raised);
+      }
+
+      .btn--secondary:disabled {
+        background: var(--color-surface-raised);
+        border-color: var(--color-border);
+        color: var(--color-text-muted);
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="card-list">
+      <li class="card">
+        <span class="badge badge--active">진행중</span>
+        <h3 class="card__title">결제 흐름 개편</h3>
+        <p class="card__desc">
+          장바구니에서 결제 완료까지의 단계를 네 단계에서 두 단계로 줄인다. 실패한 결제의 복구 화면을 새로 만드는 작업이
+          남아 있다.
+        </p>
+        <div class="card__meta"><span>김도현</span><span>2026년 8월 24일 수정</span></div>
+        <div class="card__divider"></div>
+        <div class="card__actions">
+          <button type="button" class="btn btn--primary">열기</button>
+          <button type="button" class="btn btn--secondary">보관</button>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="badge badge--done">완료</span>
+        <h3 class="card__title">알림 설정 화면</h3>
+        <p class="card__desc">
+          이메일과 푸시 알림을 항목별로 켜고 끌 수 있게 했다. 지난주 배포 이후 문의는 들어오지 않았다.
+        </p>
+        <div class="card__meta"><span>이서연</span><span>2026년 8월 12일 수정</span></div>
+        <div class="card__divider"></div>
+        <div class="card__actions">
+          <button type="button" class="btn btn--primary">열기</button>
+          <button type="button" class="btn btn--secondary">보관</button>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="badge badge--hold">보류</span>
+        <h3 class="card__title">사용량 리포트 내보내기</h3>
+        <p class="card__desc">
+          월별 사용량을 CSV로 내려받는 기능이다. 집계 서버 교체 일정이 잡힐 때까지 작업을 멈춰 두었다.
+        </p>
+        <div class="card__meta"><span>박준영</span><span>2026년 7월 30일 수정</span></div>
+        <div class="card__divider"></div>
+        <div class="card__actions">
+          <button type="button" class="btn btn--primary">열기</button>
+          <button type="button" class="btn btn--secondary" disabled>보관</button>
+        </div>
+      </li>
+    </ul>
+  </body>
+</html>

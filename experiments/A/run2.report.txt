@@ -1,9 +1,14 @@
   58  background         var(--color-canvas) → oklch(0.965 0.006 250) violation      color.surface-raised ΔE 2
+  59  color              var(--color-text) → oklch(0.24 0.032 265) violation      color.text ΔE 2.19
   84  color              var(--color-text-subtle) → oklch(0.66 0.016 265) violation      color.disabled-fg ΔE 5.32
+  91  background         var(--color-surface) → oklch(0.995 0.002 250) near           color.surface-raised ΔE 0.7
+  92  border             var(--color-border) → oklch(0.905 0.009 255) violation      color.border ΔE 2
  104  background         var(--card-accent) → oklch(0.56 0.105 72) violation      color.warning ΔE 14.5
  108  border-color       var(--card-accent) → oklch(0.56 0.105 72) violation      color.warning ΔE 14.5
  129  background         var(--card-accent-wash) → oklch(0.962 0.038 80) violation      color.warning-soft ΔE 9.75
  130  color              var(--card-accent) → oklch(0.56 0.105 72) violation      color.warning ΔE 14.5
+ 141  color              var(--color-text) → oklch(0.24 0.032 265) violation      color.text ΔE 2.19
+ 153  color              var(--color-text-muted) → oklch(0.52 0.022 265) violation      color.text-muted ΔE 3.49
  159  color              var(--color-text-subtle) → oklch(0.66 0.016 265) violation      color.disabled-fg ΔE 5.32
  169  background         var(--color-divider) → oklch(0.905 0.009 255) violation      color.border ΔE 2
  191  outline            var(--color-focus-ring) → oklch(0.55 0.18 265) violation      color.primary-hover ΔE 2.57
@@ -12,7 +17,13 @@
  198  color              var(--color-on-action) → oklch(0.995 0.002 250) near           color.surface-raised ΔE 0.7
  202  background         var(--color-action-hover) → oklch(0.44 0.155 275) violation      color.primary-hover ΔE 13.36
  203  border-color       var(--color-action-hover) → oklch(0.44 0.155 275) violation      color.primary-hover ΔE 13.36
+ 207  border             var(--color-border) → oklch(0.905 0.009 255) violation      color.border ΔE 2
+ 208  background         var(--color-surface) → oklch(0.995 0.002 250) near           color.surface-raised ΔE 0.7
+ 209  color              var(--color-text-muted) → oklch(0.52 0.022 265) violation      color.text-muted ΔE 3.49
  213  background         var(--color-canvas) → oklch(0.965 0.006 250) violation      color.surface-raised ΔE 2
+ 214  color              var(--color-text) → oklch(0.24 0.032 265) violation      color.text ΔE 2.19
  218  border-color       var(--color-disabled-line) → oklch(0.905 0.009 255) violation      color.border ΔE 2
+ 219  background         var(--color-surface) → oklch(0.995 0.002 250) near           color.surface-raised ΔE 0.7
  220  color              var(--color-disabled-text) → oklch(0.66 0.016 265) violation      color.disabled-fg ΔE 5.32
+ 225  background         var(--color-surface) → oklch(0.995 0.002 250) near           color.surface-raised ΔE 0.7
  226  color              var(--color-disabled-text) → oklch(0.66 0.016 265) violation      color.disabled-fg ΔE 5.32

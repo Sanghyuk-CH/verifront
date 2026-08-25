@@ -176,28 +176,36 @@ export function checkCss(
 
     for (const ref of varRefs) {
       const known = tokens.find((t) => t.cssVar === ref);
-      if (known) {
-        // 토큰을 제대로 참조한 자리. 분모에 들어가야 조건 간 비교가 성립한다.
-        findings.push({
-          file,
-          line,
-          prop: decl.prop,
-          raw: `var(${ref})`,
-          verdict: 'ok',
-          token: known.name,
-          tokenValue: known.value,
-        });
-        continue;
-      }
-
       const resolved = resolveVar(ref, locals);
+
       if (resolved === null) {
-        // 어디에도 선언되지 않은 참조. 값을 알 수 없어 검사가 불가능하다.
-        findings.push({ file, line, prop: decl.prop, raw: `var(${ref})`, verdict: 'unknown-token' });
+        // 문서 안에 선언이 없다.
+        if (known) {
+          // 토큰 파일에 있는 이름이다. 다른 파일에서 정의됐다고 보고 통과시킨다.
+          findings.push({
+            file,
+            line,
+            prop: decl.prop,
+            raw: `var(${ref})`,
+            verdict: 'ok',
+            token: known.name,
+            tokenValue: known.value,
+          });
+        } else {
+          // 어디에도 없다. 값을 알 수 없어 검사가 불가능하다.
+          findings.push({
+            file,
+            line,
+            prop: decl.prop,
+            raw: `var(${ref})`,
+            verdict: 'unknown-token',
+          });
+        }
         continue;
       }
 
-      // 문서 안에서 정의된 자체 변수. 이름은 우리 토큰이 아니어도 값은 검사할 수 있다.
+      // 선언이 있으면 이름이 토큰과 같아도 값을 따라간다.
+      // 이름만 보고 통과시키면 토큰 이름으로 다른 값을 정의한 경우를 놓친다.
       const rn = normalize(resolved);
       if (rn.kind !== 'color') continue;
       findings.push({

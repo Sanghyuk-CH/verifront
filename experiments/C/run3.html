@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>프로젝트</title>
+    <style>
+      /* ---- 디자인 토큰 ---- */
+      :root {
+        --color-surface: #ffffff;
+        --color-surface-raised: #f9fafb;
+        --color-border: #e5e7eb;
+        --color-text: #111827;
+        --color-text-muted: #6b7280;
+        --color-primary: #3b82f6;
+        --color-primary-fg: #ffffff;
+        --color-success: #16a34a;
+        --color-success-soft: #dcfce7;
+        --color-warning: #ca8a04;
+        --color-warning-soft: #fef9c3;
+      }
+
+      /* ---- 베이스 ---- */
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 48px 24px;
+        background: var(--color-surface-raised);
+        color: var(--color-text);
+        font-family:
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          'Noto Sans KR',
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      .card-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: 560px;
+        margin: 0 auto;
+      }
+
+      /* ---- 카드 ---- */
+      .card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        padding: 20px 22px 16px;
+        transition: border-color 150ms ease;
+      }
+
+      .card:hover {
+        border-color: var(--color-primary);
+      }
+
+      /* ---- 상태 배지 ---- */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .badge--active {
+        color: var(--color-primary);
+        background: var(--color-surface-raised);
+        border-color: var(--color-primary);
+      }
+
+      .badge--done {
+        color: var(--color-success);
+        background: var(--color-success-soft);
+      }
+
+      .badge--hold {
+        color: var(--color-warning);
+        background: var(--color-warning-soft);
+      }
+
+      /* ---- 본문 ---- */
+      .card__title {
+        margin: 12px 0 6px;
+        font-size: 17px;
+        font-weight: 650;
+        letter-spacing: -0.01em;
+      }
+
+      .card__desc {
+        margin: 0;
+        color: var(--color-text-muted);
+        font-size: 14px;
+      }
+
+      .card__meta {
+        margin: 14px 0 0;
+        color: var(--color-text-muted);
+        font-size: 13px;
+      }
+
+      .card__meta span {
+        margin: 0 6px;
+      }
+
+      /* ---- 구분선 + 액션 ---- */
+      .card__actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid var(--color-border);
+      }
+
+      .btn {
+        padding: 7px 16px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background-color 150ms ease,
+          border-color 150ms ease;
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      .btn--primary {
+        background: var(--color-primary);
+        color: var(--color-primary-fg);
+      }
+
+      .btn--primary:hover {
+        background: color-mix(in srgb, var(--color-primary) 78%, var(--color-text));
+      }
+
+      .btn--secondary {
+        background: var(--color-surface);
+        color: var(--color-text);
+        border-color: var(--color-border);
+      }
+
+      .btn--secondary:hover {
+        background: var(--color-surface-raised);
+      }
+
+      .btn--secondary:disabled {
+        color: var(--color-text-muted);
+        background: var(--color-surface-raised);
+        border-color: var(--color-border);
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-list">
+      <article class="card">
+        <span class="badge badge--active">진행중</span>
+        <h3 class="card__title">결제 모듈 리팩터링</h3>
+        <p class="card__desc">
+          결제 요청과 승인 로직을 분리해 재시도 처리를 단순하게 만든다. 외부 PG 연동 부분은 어댑터 하나로 모아 테스트할
+          수 있게 바꾼다.
+        </p>
+        <p class="card__meta">김서연<span>·</span>2026년 8월 24일 수정</p>
+        <div class="card__actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button">보관</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="badge badge--done">완료</span>
+        <h3 class="card__title">온보딩 이메일 개편</h3>
+        <p class="card__desc">
+          가입 후 첫 주에 나가는 메일 다섯 통을 세 통으로 줄이고 문구를 다시 썼다. 발송 시점은 가입 시각 기준으로 맞춰
+          두었다.
+        </p>
+        <p class="card__meta">정민호<span>·</span>2026년 8월 11일 수정</p>
+        <div class="card__actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button">보관</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="badge badge--hold">보류</span>
+        <h3 class="card__title">검색 인덱스 마이그레이션</h3>
+        <p class="card__desc">
+          상품 색인을 새 클러스터로 옮기고 동의어 사전을 정리하려 했다. 인프라 예산 확정 전까지 작업을 멈춰 둔 상태다.
+        </p>
+        <p class="card__meta">이지우<span>·</span>2026년 7월 29일 수정</p>
+        <div class="card__actions">
+          <button class="btn btn--primary" type="button">열기</button>
+          <button class="btn btn--secondary" type="button" disabled>보관</button>
+        </div>
+      </article>
+    </div>
+  </body>
+</html>

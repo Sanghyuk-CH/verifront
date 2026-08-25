@@ -32,7 +32,7 @@ interface Row {
 
 const rows: Row[] = [];
 
-for (const condition of ['A', 'B']) {
+for (const condition of ['A', 'B', 'C']) {
   const conditionDir = path.join(dir, condition);
   if (!fs.existsSync(conditionDir)) continue;
 
@@ -73,7 +73,7 @@ for (const r of rows) {
 }
 
 console.log('\n--- 조건별 합계 ---');
-for (const condition of ['A', 'B']) {
+for (const condition of ['A', 'B', 'C']) {
   const sub = rows.filter((r) => r.condition === condition);
   if (!sub.length) continue;
   const total = sub.reduce((s, r) => s + r.declarations, 0);
