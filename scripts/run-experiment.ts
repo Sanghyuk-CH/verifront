@@ -6,7 +6,7 @@ import { checkCss, loadTokens, type Finding, type Verdict } from '../src/check.j
 const dir = path.join(process.cwd(), 'experiments');
 const tokens = loadTokens(JSON.parse(fs.readFileSync(path.join(dir, 'tokens.json'), 'utf8')));
 
-const VERDICTS: Verdict[] = ['ok', 'near', 'violation', 'alpha-variant', 'unknown-token'];
+const VERDICTS: Verdict[] = ['ok', 'near', 'violation', 'alpha-variant', 'unknown-token', 'uncomputable'];
 
 /** HTML 안의 <style> 블록만 뽑는다. 생성물이 .css 면 그대로 쓴다. */
 function readCss(file: string): string {
@@ -92,6 +92,7 @@ for (const condition of ['A', 'B', 'C']) {
 
   console.log(
     `조건 ${condition}  회차 ${sub.length}  색선언 ${total}  ` +
+      `검사불가 ${sum.uncomputable}  ` +
       `위반 ${failures} (${((failures / total) * 100).toFixed(1)}%)  ` +
       `그중 육안으로 못 잡는 것 ${invisible} (${failures ? ((invisible / failures) * 100).toFixed(1) : 0}%)`,
   );

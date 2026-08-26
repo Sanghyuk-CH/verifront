@@ -33,7 +33,7 @@ export const DEFAULT_PROPS = [
 
 export const EFFECT_PROPS = ['box-shadow', 'text-shadow', 'background-image', 'background'];
 
-export type Verdict = 'ok' | 'near' | 'violation' | 'alpha-variant' | 'unknown-token';
+export type Verdict = 'ok' | 'near' | 'violation' | 'alpha-variant' | 'unknown-token' | 'uncomputable';
 
 export interface Finding {
   file: string;
@@ -95,18 +95,37 @@ function resolveVar(name: string, locals: Map<string, string>, depth = 0): strin
   return raw;
 }
 
+/**
+ * 정적으로 값을 알 수 없는 색 함수.
+ * color-mix 는 브라우저가 런타임에 보간하고, light-dark 는 사용자 설정에 따라 갈린다.
+ * 상대 색 문법 rgb(from …) 도 기준 색이 정해져야 값이 나온다.
+ * 이런 자리를 ok 로 찍으면 검사기가 보지도 않은 색을 통과시킨 것이 된다.
+ */
+const UNCOMPUTABLE_FN = /^(color-mix|light-dark)$/i;
+
+function isRelativeColor(node: valueParser.FunctionNode): boolean {
+  return node.nodes.some((n) => n.type === 'word' && n.value.toLowerCase() === 'from');
+}
+
 interface Candidates {
   colors: string[];
   /** 참조된 커스텀 프로퍼티 이름 */
   varRefs: string[];
+  /** 정적으로 값을 계산할 수 없는 자리 */
+  uncomputable: string[];
 }
 
 function extractCandidates(value: string): Candidates {
   const colors: string[] = [];
   const varRefs: string[] = [];
+  const uncomputable: string[] = [];
 
   valueParser(value).walk((node) => {
     if (node.type === 'function') {
+      if (UNCOMPUTABLE_FN.test(node.value)) {
+        uncomputable.push(valueParser.stringify(node));
+        return false; // 안으로 들어가지 않는다. 인자를 세면 계산되지 않은 색이 ok 가 된다.
+      }
       if (node.value === 'var') {
         const name = node.nodes.find((n) => n.type === 'word' && n.value.startsWith('--'));
         // 폴백을 보고 이 참조가 색 토큰인지 판단한다.
@@ -120,6 +139,10 @@ function extractCandidates(value: string): Candidates {
         return true;
       }
       if (/^(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)$/i.test(node.value)) {
+        if (isRelativeColor(node)) {
+          uncomputable.push(valueParser.stringify(node));
+          return false;
+        }
         colors.push(valueParser.stringify(node));
         return false;
       }
@@ -129,7 +152,7 @@ function extractCandidates(value: string): Candidates {
     return true;
   });
 
-  return { colors, varRefs };
+  return { colors, varRefs, uncomputable };
 }
 
 function judge(rgb: Rgb, tokens: Token[]): Omit<Finding, 'file' | 'line' | 'prop' | 'raw'> {
@@ -141,9 +164,7 @@ function judge(rgb: Rgb, tokens: Token[]): Omit<Finding, 'file' | 'line' | 'prop
     return { verdict: 'alpha-variant', token: alphaOnly.name, tokenValue: alphaOnly.value };
   }
 
-  const nearest = tokens
-    .map((t) => ({ t, d: perceptualDistance(rgb, t.rgb) }))
-    .sort((a, b) => a.d - b.d)[0];
+  const nearest = tokens.map((t) => ({ t, d: perceptualDistance(rgb, t.rgb) })).sort((a, b) => a.d - b.d)[0];
 
   // 토큰 목록이 비어 있으면 비교 대상이 없다. 견줄 토큰 없이 위반으로만 기록한다.
   if (!nearest) return { verdict: 'violation' };
@@ -160,7 +181,7 @@ export function checkCss(
   css: string,
   file: string,
   tokens: Token[],
-  opts: { includeEffects?: boolean } = {}
+  opts: { includeEffects?: boolean } = {},
 ): Finding[] {
   const props = new Set(opts.includeEffects ? [...DEFAULT_PROPS, ...EFFECT_PROPS] : DEFAULT_PROPS);
   const findings: Finding[] = [];
@@ -172,7 +193,12 @@ export function checkCss(
     // 커스텀 프로퍼티 선언도 검사한다. --shadow 처럼 색을 품은 합성 값이 있다.
     if (!props.has(prop) && !prop.startsWith('--')) return;
     const line = decl.source?.start?.line ?? 0;
-    const { colors, varRefs } = extractCandidates(decl.value);
+    const { colors, varRefs, uncomputable } = extractCandidates(decl.value);
+
+    for (const raw of uncomputable) {
+      // 값이 브라우저에서 정해진다. 통과도 위반도 아니고, 검사하지 못한 자리다.
+      findings.push({ file, line, prop: decl.prop, raw, verdict: 'uncomputable' });
+    }
 
     for (const ref of varRefs) {
       const known = tokens.find((t) => t.cssVar === ref);

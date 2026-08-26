@@ -3,12 +3,14 @@
     "near": 0,
     "violation": 0,
     "alpha-variant": 0,
-    "unknown-token": 0
+    "unknown-token": 0,
+    "uncomputable": 0
   },
   "dirty.css": {
     "near": 6,
     "violation": 4,
     "alpha-variant": 1,
-    "unknown-token": 1
+    "unknown-token": 1,
+    "uncomputable": 2
   }
 }

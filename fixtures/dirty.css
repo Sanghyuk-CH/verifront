@@ -12,3 +12,5 @@
 .v10 { color: var(--color-primary, #3b82f5); }      /* near: 폴백 값 */
 .v11 { --color-text: #1f2937; }                      /* violation: 토큰 이름으로 다른 값 선언 */
 .v12 { color: var(--color-text); }                   /* violation: 위 선언을 따라감 */
+.v13 { background-color: color-mix(in srgb, var(--color-primary) 80%, #000); }  /* uncomputable */
+.v14 { color: rgb(from var(--color-primary) r g b / 50%); }               /* uncomputable */
