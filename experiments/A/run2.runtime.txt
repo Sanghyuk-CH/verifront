@@ -1,0 +1,108 @@
+default  body                                         background-color     oklch(0.965 0.006 250)                     violation      color.surface-raised ΔE 2
+default  main.board > h2.board-title                  color                oklch(0.66 0.016 265)                      violation      color.disabled-fg ΔE 5.32
+default  main.board > article.card.card--active       background-color     oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+default  main.board > article.card.card--active       border-top-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--active       border-right-color   oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--active       border-bottom-color  oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--active       border-left-color    oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--active::before background-color     oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--active > span.badge color                oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--active > span.badge background-color     oklch(0.955 0.028 275)                     violation      color.border ΔE 7.09
+default  main.board > article.card.card--active > h3.card-title color                oklch(0.24 0.032 265)                      violation      color.text ΔE 2.19
+default  main.board > article.card.card--active > p.card-desc color                oklch(0.52 0.022 265)                      violation      color.text-muted ΔE 3.49
+default  main.board > article.card.card--active > p.meta color                oklch(0.66 0.016 265)                      violation      color.disabled-fg ΔE 5.32
+default  main.board > article.card.card--active > p.meta > span.meta-sep color                oklch(0.66 0.016 265)                      violation      color.disabled-fg ΔE 5.32
+default  main.board > article.card.card--active > div.divider background-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--active > div.actions > button.btn.btn--primary color                oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+default  main.board > article.card.card--active > div.actions > button.btn.btn--primary background-color     oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--active > div.actions > button.btn.btn--primary border-top-color     oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--active > div.actions > button.btn.btn--primary border-right-color   oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--active > div.actions > button.btn.btn--primary border-bottom-color  oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--active > div.actions > button.btn.btn--primary border-left-color    oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--active > div.actions > button.btn.btn--secondary color                oklch(0.52 0.022 265)                      violation      color.text-muted ΔE 3.49
+default  main.board > article.card.card--active > div.actions > button.btn.btn--secondary background-color     oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+default  main.board > article.card.card--active > div.actions > button.btn.btn--secondary border-top-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--active > div.actions > button.btn.btn--secondary border-right-color   oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--active > div.actions > button.btn.btn--secondary border-bottom-color  oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--active > div.actions > button.btn.btn--secondary border-left-color    oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done         background-color     oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+default  main.board > article.card.card--done         border-top-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done         border-right-color   oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done         border-bottom-color  oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done         border-left-color    oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done::before background-color     oklch(0.52 0.085 178)                      violation      color.success ΔE 21.42
+default  main.board > article.card.card--done > span.badge color                oklch(0.52 0.085 178)                      violation      color.success ΔE 21.42
+default  main.board > article.card.card--done > span.badge background-color     oklch(0.958 0.028 178)                     violation      color.success-soft ΔE 5.74
+default  main.board > article.card.card--done > h3.card-title color                oklch(0.24 0.032 265)                      violation      color.text ΔE 2.19
+default  main.board > article.card.card--done > p.card-desc color                oklch(0.52 0.022 265)                      violation      color.text-muted ΔE 3.49
+default  main.board > article.card.card--done > p.meta color                oklch(0.66 0.016 265)                      violation      color.disabled-fg ΔE 5.32
+default  main.board > article.card.card--done > p.meta > span.meta-sep color                oklch(0.66 0.016 265)                      violation      color.disabled-fg ΔE 5.32
+default  main.board > article.card.card--done > div.divider background-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done > div.actions > button.btn.btn--primary color                oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+default  main.board > article.card.card--done > div.actions > button.btn.btn--primary background-color     oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--done > div.actions > button.btn.btn--primary border-top-color     oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--done > div.actions > button.btn.btn--primary border-right-color   oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--done > div.actions > button.btn.btn--primary border-bottom-color  oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--done > div.actions > button.btn.btn--primary border-left-color    oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--done > div.actions > button.btn.btn--secondary color                oklch(0.52 0.022 265)                      violation      color.text-muted ΔE 3.49
+default  main.board > article.card.card--done > div.actions > button.btn.btn--secondary background-color     oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+default  main.board > article.card.card--done > div.actions > button.btn.btn--secondary border-top-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done > div.actions > button.btn.btn--secondary border-right-color   oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done > div.actions > button.btn.btn--secondary border-bottom-color  oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--done > div.actions > button.btn.btn--secondary border-left-color    oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--onhold       background-color     oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+default  main.board > article.card.card--onhold       border-top-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--onhold       border-right-color   oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--onhold       border-bottom-color  oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--onhold       border-left-color    oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--onhold::before background-color     oklch(0.56 0.105 72)                       violation      color.warning ΔE 14.5
+default  main.board > article.card.card--onhold > span.badge color                oklch(0.56 0.105 72)                       violation      color.warning ΔE 14.5
+default  main.board > article.card.card--onhold > span.badge background-color     oklch(0.962 0.038 80)                      violation      color.warning-soft ΔE 9.75
+default  main.board > article.card.card--onhold > h3.card-title color                oklch(0.24 0.032 265)                      violation      color.text ΔE 2.19
+default  main.board > article.card.card--onhold > p.card-desc color                oklch(0.52 0.022 265)                      violation      color.text-muted ΔE 3.49
+default  main.board > article.card.card--onhold > p.meta color                oklch(0.66 0.016 265)                      violation      color.disabled-fg ΔE 5.32
+default  main.board > article.card.card--onhold > p.meta > span.meta-sep color                oklch(0.66 0.016 265)                      violation      color.disabled-fg ΔE 5.32
+default  main.board > article.card.card--onhold > div.divider background-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+default  main.board > article.card.card--onhold > div.actions > button.btn.btn--primary color                oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+default  main.board > article.card.card--onhold > div.actions > button.btn.btn--primary background-color     oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--onhold > div.actions > button.btn.btn--primary border-top-color     oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--onhold > div.actions > button.btn.btn--primary border-right-color   oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--onhold > div.actions > button.btn.btn--primary border-bottom-color  oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+default  main.board > article.card.card--onhold > div.actions > button.btn.btn--primary border-left-color    oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+disabled main.board > article.card.card--onhold > div.actions > button.btn.btn--secondary color                oklch(0.66 0.016 265)                      violation      color.disabled-fg ΔE 5.32
+disabled main.board > article.card.card--onhold > div.actions > button.btn.btn--secondary background-color     oklch(0.995 0.002 250)                     near           color.surface-raised ΔE 0.7
+disabled main.board > article.card.card--onhold > div.actions > button.btn.btn--secondary border-top-color     oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+disabled main.board > article.card.card--onhold > div.actions > button.btn.btn--secondary border-right-color   oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+disabled main.board > article.card.card--onhold > div.actions > button.btn.btn--secondary border-bottom-color  oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+disabled main.board > article.card.card--onhold > div.actions > button.btn.btn--secondary border-left-color    oklch(0.905 0.009 255)                     violation      color.border ΔE 2
+hover    main.board > article.card.card--active       border-top-color     oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+hover    main.board > article.card.card--active       border-right-color   oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+hover    main.board > article.card.card--active       border-bottom-color  oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+hover    main.board > article.card.card--active       border-left-color    oklch(0.52 0.155 275)                      violation      color.primary-hover ΔE 6.99
+hover    main.board > article.card.card--done         border-top-color     oklch(0.52 0.085 178)                      violation      color.success ΔE 21.42
+hover    main.board > article.card.card--done         border-right-color   oklch(0.52 0.085 178)                      violation      color.success ΔE 21.42
+hover    main.board > article.card.card--done         border-bottom-color  oklch(0.52 0.085 178)                      violation      color.success ΔE 21.42
+hover    main.board > article.card.card--done         border-left-color    oklch(0.52 0.085 178)                      violation      color.success ΔE 21.42
+hover    main.board > article.card.card--onhold       border-top-color     oklch(0.56 0.105 72)                       violation      color.warning ΔE 14.5
+hover    main.board > article.card.card--onhold       border-right-color   oklch(0.56 0.105 72)                       violation      color.warning ΔE 14.5
+hover    main.board > article.card.card--onhold       border-bottom-color  oklch(0.56 0.105 72)                       violation      color.warning ΔE 14.5
+hover    main.board > article.card.card--onhold       border-left-color    oklch(0.56 0.105 72)                       violation      color.warning ΔE 14.5
+hover    main.board > article.card.card--active > div.actions > button.btn.btn--primary background-color     oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--active > div.actions > button.btn.btn--primary border-top-color     oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--active > div.actions > button.btn.btn--primary border-right-color   oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--active > div.actions > button.btn.btn--primary border-bottom-color  oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--active > div.actions > button.btn.btn--primary border-left-color    oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--done > div.actions > button.btn.btn--primary background-color     oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--done > div.actions > button.btn.btn--primary border-top-color     oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--done > div.actions > button.btn.btn--primary border-right-color   oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--done > div.actions > button.btn.btn--primary border-bottom-color  oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--done > div.actions > button.btn.btn--primary border-left-color    oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--onhold > div.actions > button.btn.btn--primary background-color     oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--onhold > div.actions > button.btn.btn--primary border-top-color     oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--onhold > div.actions > button.btn.btn--primary border-right-color   oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--onhold > div.actions > button.btn.btn--primary border-bottom-color  oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--onhold > div.actions > button.btn.btn--primary border-left-color    oklch(0.44 0.155 275)                      violation      color.primary-hover ΔE 13.36
+hover    main.board > article.card.card--active > div.actions > button.btn.btn--secondary color                oklch(0.24 0.032 265)                      violation      color.text ΔE 2.19
+hover    main.board > article.card.card--active > div.actions > button.btn.btn--secondary background-color     oklch(0.965 0.006 250)                     violation      color.surface-raised ΔE 2
+hover    main.board > article.card.card--done > div.actions > button.btn.btn--secondary color                oklch(0.24 0.032 265)                      violation      color.text ΔE 2.19
+hover    main.board > article.card.card--done > div.actions > button.btn.btn--secondary background-color     oklch(0.965 0.006 250)                     violation      color.surface-raised ΔE 2

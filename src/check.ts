@@ -155,7 +155,7 @@ function extractCandidates(value: string): Candidates {
   return { colors, varRefs, uncomputable };
 }
 
-function judge(rgb: Rgb, tokens: Token[]): Omit<Finding, 'file' | 'line' | 'prop' | 'raw'> {
+export function judge(rgb: Rgb, tokens: Token[]): Omit<Finding, 'file' | 'line' | 'prop' | 'raw'> {
   const exact = tokens.find((t) => sameRgb(rgb, t.rgb) && sameAlpha(rgb, t.rgb));
   if (exact) return { verdict: 'ok', token: exact.name, tokenValue: exact.value };
 

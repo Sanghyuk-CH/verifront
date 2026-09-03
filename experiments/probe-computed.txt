@@ -1,0 +1,17 @@
+browser: chromium 141.0.7390.37
+
+| #  | declaration                                                | getComputedStyle                      |
+|----|------------------------------------------------------------|---------------------------------------|
+| 1  | color: #3b82f6                                             | rgb(59, 130, 246)                     |
+| 2  | color: rgb(59 130 246 / 0.5)                               | rgba(59, 130, 246, 0.5)               |
+| 3  | color: oklch(0.6 0.15 258)                                 | oklch(0.6 0.15 258)                   |
+| 4  | color: color-mix(in srgb, #3b82f6 82%, #111827)            | color(srgb 0.201725 0.43498 0.818588) |
+| 5  | color: var(--t)  (--t: #3b82f6)                            | rgb(59, 130, 246)                     |
+| 6  | color: currentcolor  (parent #111827)                      | rgb(17, 24, 39)                       |
+| 7  | bg #3b82f6 → hover #2563eb, transition 0.3s — before hover | rgb(59, 130, 246)                     |
+| 7a | same — after hover()                                       | +  0ms rgb(59, 130, 246)              |
+| 7b | same — after hover()                                       | + 51ms rgb(55, 125, 244)              |
+| 7c | same — after hover()                                       | +101ms rgb(52, 120, 242)              |
+| 7d | same — after hover()                                       | +151ms rgb(48, 115, 241)              |
+| 7e | same — after hover()                                       | +201ms rgb(44, 109, 239)              |
+| 7f | same — after hover()                                       | +402ms rgb(37, 99, 235)               |

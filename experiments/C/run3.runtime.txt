@@ -1,0 +1,41 @@
+default  body                                         background-color     rgb(249, 250, 251)                         ok             color.surface-raised 
+default  div.card-list > article.card                 background-color     rgb(255, 255, 255)                         ok             color.surface 
+default  div.card-list > article.card                 border-top-color     rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card                 border-right-color   rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card                 border-bottom-color  rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card                 border-left-color    rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card > span.badge.badge--active color                rgb(59, 130, 246)                          ok             color.primary 
+default  div.card-list > article.card > span.badge.badge--active background-color     rgb(249, 250, 251)                         ok             color.surface-raised 
+default  div.card-list > article.card > span.badge.badge--active border-top-color     rgb(59, 130, 246)                          ok             color.primary 
+default  div.card-list > article.card > span.badge.badge--active border-right-color   rgb(59, 130, 246)                          ok             color.primary 
+default  div.card-list > article.card > span.badge.badge--active border-bottom-color  rgb(59, 130, 246)                          ok             color.primary 
+default  div.card-list > article.card > span.badge.badge--active border-left-color    rgb(59, 130, 246)                          ok             color.primary 
+default  div.card-list > article.card > h3.card__title color                rgb(17, 24, 39)                            ok             color.text 
+default  div.card-list > article.card > p.card__desc  color                rgb(107, 114, 128)                         ok             color.text-muted 
+default  div.card-list > article.card > p.card__meta  color                rgb(107, 114, 128)                         ok             color.text-muted 
+default  div.card-list > article.card > p.card__meta > span color                rgb(107, 114, 128)                         ok             color.text-muted 
+default  div.card-list > article.card > div.card__actions border-top-color     rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card > div.card__actions > button.btn.btn--primary color                rgb(255, 255, 255)                         ok             color.surface 
+default  div.card-list > article.card > div.card__actions > button.btn.btn--primary background-color     rgb(59, 130, 246)                          ok             color.primary 
+default  div.card-list > article.card > div.card__actions > button.btn.btn--secondary color                rgb(17, 24, 39)                            ok             color.text 
+default  div.card-list > article.card > div.card__actions > button.btn.btn--secondary background-color     rgb(255, 255, 255)                         ok             color.surface 
+default  div.card-list > article.card > div.card__actions > button.btn.btn--secondary border-top-color     rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card > div.card__actions > button.btn.btn--secondary border-right-color   rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card > div.card__actions > button.btn.btn--secondary border-bottom-color  rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card > div.card__actions > button.btn.btn--secondary border-left-color    rgb(229, 231, 235)                         ok             color.border 
+default  div.card-list > article.card > span.badge.badge--done color                rgb(22, 163, 74)                           ok             color.success 
+default  div.card-list > article.card > span.badge.badge--done background-color     rgb(220, 252, 231)                         ok             color.success-soft 
+default  div.card-list > article.card > span.badge.badge--hold color                rgb(202, 138, 4)                           ok             color.warning 
+default  div.card-list > article.card > span.badge.badge--hold background-color     rgb(254, 249, 195)                         ok             color.warning-soft 
+disabled div.card-list > article.card > div.card__actions > button.btn.btn--secondary color                rgb(107, 114, 128)                         ok             color.text-muted 
+disabled div.card-list > article.card > div.card__actions > button.btn.btn--secondary background-color     rgb(249, 250, 251)                         ok             color.surface-raised 
+disabled div.card-list > article.card > div.card__actions > button.btn.btn--secondary border-top-color     rgb(229, 231, 235)                         ok             color.border 
+disabled div.card-list > article.card > div.card__actions > button.btn.btn--secondary border-right-color   rgb(229, 231, 235)                         ok             color.border 
+disabled div.card-list > article.card > div.card__actions > button.btn.btn--secondary border-bottom-color  rgb(229, 231, 235)                         ok             color.border 
+disabled div.card-list > article.card > div.card__actions > button.btn.btn--secondary border-left-color    rgb(229, 231, 235)                         ok             color.border 
+hover    div.card-list > article.card                 border-top-color     rgb(59, 130, 246)                          ok             color.primary 
+hover    div.card-list > article.card                 border-right-color   rgb(59, 130, 246)                          ok             color.primary 
+hover    div.card-list > article.card                 border-bottom-color  rgb(59, 130, 246)                          ok             color.primary 
+hover    div.card-list > article.card                 border-left-color    rgb(59, 130, 246)                          ok             color.primary 
+hover    div.card-list > article.card > div.card__actions > button.btn.btn--primary background-color     color(srgb 0.195137 0.418353 0.786118)     violation      color.primary-hover ΔE 5.02
+hover    div.card-list > article.card > div.card__actions > button.btn.btn--secondary background-color     rgb(249, 250, 251)                         ok             color.surface-raised 

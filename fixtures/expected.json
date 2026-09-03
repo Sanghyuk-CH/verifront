@@ -12,5 +12,19 @@
     "alpha-variant": 1,
     "unknown-token": 1,
     "uncomputable": 2
+  },
+  "clean.html": {
+    "near": 0,
+    "violation": 0,
+    "alpha-variant": 0,
+    "unknown-token": 0,
+    "uncomputable": 0
+  },
+  "dirty.html": {
+    "near": 6,
+    "violation": 8,
+    "alpha-variant": 2,
+    "unknown-token": 0,
+    "uncomputable": 0
   }
 }

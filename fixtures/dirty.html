@@ -1,0 +1,56 @@
+<!doctype html>
+<!-- 위반을 심어둔 화면. 3편에서 검사기를 속인 케이스가 런타임에서 어떻게 보이는지 확인한다. -->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-surface: #ffffff;
+    --color-text: #111827;
+    --color-text-muted: #6b7280;
+    --color-border: #e5e7eb;
+    --color-danger: #ef4444;
+  }
+  body { color: var(--color-text); background-color: var(--color-surface); }
+
+  .r1 { color: #3b82f5; }                                      /* near */
+  .r2 { background-color: #ff0066; }                           /* violation */
+  .r3 { background-color: rgba(59, 130, 246, 0.5); }           /* alpha-variant */
+  .r4 { border: 1px solid oklch(0.925 0.006 255); }            /* near: 3편 조건 A 의 회색 oklch. 브라우저가 어떤 형식으로 주는지 본다 */
+  .r5 { --color-text: #1f2937; color: var(--color-text); }     /* violation: 이름 가로채기. 런타임은 이름을 모른다. 값만 본다 */
+  .r6 { background-color: color-mix(in srgb, var(--color-primary) 80%, #000); } /* 정적에서 uncomputable. 런타임에서 실제 판정 */
+  .r7 { color: currentcolor; }                                 /* ok: 정적은 화이트리스트로 넘겼다. 런타임은 부모 값을 본다 */
+  .r8 { color: inherit; }                                      /* ok: 같은 이유 */
+  .r9 { color: rgb(from var(--color-primary) r g b / 50%); }   /* 정적에서 uncomputable. 런타임 판정 */
+  .r10::before { content: ''; display: inline-block; width: 8px; height: 8px; background-color: #ff0066; } /* violation: 가상 요소도 그려진다 */
+
+  /* transition 이 걸린 hover. 안정화 없이 읽으면 중간값이 나온다 (probe 7b). */
+  .btn { background-color: var(--color-primary); color: var(--color-surface); border: 0; padding: 8px 12px;
+         transition: background-color 0.3s linear; }
+  .btn:hover { background-color: var(--color-primary-hover); }          /* hover: ok */
+  .btn--bad:hover { background-color: #2563ea; }                        /* hover: near */
+  .btn:disabled { background-color: var(--color-border); color: var(--color-text-muted); } /* disabled: ok */
+
+  .card { border: 1px solid var(--color-border); padding: 8px; transition: border-color 0.2s; }
+  .card:hover { border-color: #ff0066; }                                /* hover: violation ×4 변 → 중복 제거로 4건 (변마다 속성이 다르다) */
+</style>
+</head>
+<body>
+  <p class="r1">r1</p>
+  <p class="r2">r2</p>
+  <p class="r3">r3</p>
+  <p class="r4">r4</p>
+  <p class="r5">r5</p>
+  <p class="r6">r6</p>
+  <p class="r7">r7</p>
+  <p class="r8">r8</p>
+  <p class="r9">r9</p>
+  <p class="r10">r10</p>
+  <div class="card">card</div>
+  <button class="btn">btn</button>
+  <button class="btn btn--bad">bad</button>
+  <button class="btn" disabled>disabled</button>
+</body>
+</html>

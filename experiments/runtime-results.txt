@@ -1,0 +1,83 @@
+browser: chromium 141.0.7390.37
+
+== 판정 분포 (정적 / 런타임) ==
+회차                   ok          near     violation alpha-variant unknown-token  uncomputable     건수
+A/run1   S              3             6            22             0             0             0      31
+         R              8            30            53             0             0             0      91
+A/run2   S              0             5            24             0             0             0      29
+         R              0             9            99             0             0             0     108
+A/run3   S              3             1            26             0             0             0      30
+         R              3             1            37             0             0             0      41
+B/run1   S             28             0             0             0             0             0      28
+         R             37             0             0             0             0             0      37
+B/run2   S             26             0             0             0             0             0      26
+         R             37             0             0             0             0             0      37
+B/run3   S             26             0             0             0             0             0      26
+         R             40             0             0             0             0             0      40
+C/run1   S             27             0             0             0             0             0      27
+         R             41             0             0             0             0             0      41
+C/run2   S             26             0             0             0             0             1      27
+         R             36             0             1             0             0             0      37
+C/run3   S             25             0             0             0             0             1      26
+         R             40             0             1             0             0             0      41
+
+== 런타임 상태별 ==
+회차       상태                  ok          near     violation alpha-variant unknown-token  uncomputable
+A/run1     default               8            23            29             0             0             0
+A/run1     hover                 0             2            23             0             0             0
+A/run1     disabled              0             5             1             0             0             0
+A/run2     default               0             8            63             0             0             0
+A/run2     hover                 0             0            31             0             0             0
+A/run2     disabled              0             1             5             0             0             0
+A/run3     default               3             1            25             0             0             0
+A/run3     hover                 0             0             6             0             0             0
+A/run3     disabled              0             0             6             0             0             0
+B/run1     default              25             0             0             0             0             0
+B/run1     hover                 6             0             0             0             0             0
+B/run1     disabled              6             0             0             0             0             0
+B/run2     default              25             0             0             0             0             0
+B/run2     hover                 6             0             0             0             0             0
+B/run2     disabled              6             0             0             0             0             0
+B/run3     default              25             0             0             0             0             0
+B/run3     hover                 9             0             0             0             0             0
+B/run3     disabled              6             0             0             0             0             0
+C/run1     default              29             0             0             0             0             0
+C/run1     hover                 6             0             0             0             0             0
+C/run1     disabled              6             0             0             0             0             0
+C/run2     default              25             0             0             0             0             0
+C/run2     hover                 5             0             1             0             0             0
+C/run2     disabled              6             0             0             0             0             0
+C/run3     default              29             0             0             0             0             0
+C/run3     hover                 5             0             1             0             0             0
+C/run3     disabled              6             0             0             0             0             0
+
+== 값 대조: 정적만 본 값 / 런타임만 본 값 ==
+
+A/run1  정적만 0  런타임만 0
+
+A/run2  정적만 1  런타임만 3
+  정적만: #3c68d9
+  런타임만: #eaefff    violation      color.border           ΔE 7.09  default:main.board > article.card.card--active > span.badge background-color
+  런타임만: #217969    violation      color.success          ΔE 21.42  default:main.board > article.card.card--done::before background-color
+  런타임만: #def8f1    violation      color.success-soft     ΔE 5.74  default:main.board > article.card.card--done > span.badge background-color
+
+A/run3  정적만 0  런타임만 0
+
+B/run1  정적만 0  런타임만 0
+
+B/run2  정적만 0  런타임만 0
+
+B/run3  정적만 0  런타임만 0
+
+C/run1  정적만 0  런타임만 0
+
+C/run2  정적만 0  런타임만 1
+  런타임만: #336fd1    violation      color.primary-hover    ΔE 5.22  hover:ul.card-list > li.card > div.card__actions > button.btn.btn--primary background-color
+
+C/run3  정적만 0  런타임만 1
+  런타임만: #326bc8    violation      color.primary-hover    ΔE 5.02  hover:div.card-list > article.card > div.card__actions > button.btn.btn--primary background-color
+
+== 조건별 합계 (런타임) ==
+조건 A  판정 240  ok 11  near 40  violation 189  alpha-variant 0  unknown-token 0  uncomputable 0
+조건 B  판정 114  ok 114  near 0  violation 0  alpha-variant 0  unknown-token 0  uncomputable 0
+조건 C  판정 119  ok 117  near 0  violation 2  alpha-variant 0  unknown-token 0  uncomputable 0
