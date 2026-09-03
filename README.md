@@ -4,6 +4,8 @@
 
 v0.1은 CSS의 색상 값이 디자인 토큰을 지켰는지 검사한다. `#3b82f5`와 `#3b82f6`처럼 육안으로 구분되지 않는 차이를 잡는 것이 목적이다.
 
+검사 축은 둘이다. 정적 검사는 CSS 파일의 선언을 읽고 런타임 검사는 브라우저에 띄워 실제로 그려진 값을 읽는다. 판정 척도는 같은 코드를 쓴다.
+
 ## 판정
 
 | 판정            | 뜻                                             |
@@ -29,6 +31,18 @@ v0.1은 CSS의 색상 값이 디자인 토큰을 지켰는지 검사한다. `#3b
 
 SCSS는 컴파일한 뒤에 검사한다. `darken($primary, 10%)` 같은 함수는 소스에 값이 없다.
 
+## 런타임 검사
+
+`src/runtime.ts`. Playwright로 HTML을 열고 `getComputedStyle`로 색을 읽는다. 판정 단위는 (선택자 경로, 속성, 상태)다. 상태는 default, hover, disabled를 방문한다. hover 대상은 스타일시트에서 `:hover`가 붙은 선택자로 정한다.
+
+그려지는 값만 센다. 브라우저는 border가 없는 요소에도 `border-top-color`를 답하고 배경이 없는 요소에도 `rgba(0, 0, 0, 0)`을 답한다. `color`는 직접 텍스트가 있는 요소만, `border-*-color`는 그 변에 border가 있을 때만, `background-color`는 투명이 아닐 때만 읽는다. `::before`, `::after`도 `content`가 있으면 읽는다.
+
+transition 도중에 읽으면 보간 중간값이 나온다. 같은 값이 두 번 연속 읽힐 때까지 기다린 뒤 판정한다. transition을 끄지 않는다.
+
+정적 검사는 코드 전체를 보지만 `color-mix()`처럼 브라우저가 계산하는 값과 캐스케이드로 스코프가 나뉘는 커스텀 프로퍼티를 못 본다. 런타임 검사는 값을 알지만 방문한 상태만 본다. 둘의 값 집합을 비교하면 서로의 사각지대가 드러난다.
+
+브라우저는 Playwright의 Chromium을 쓴다. `VERIFRONT_CHROME`에 실행 파일 경로를 주면 그것을 쓴다.
+
 ## 실험
 
 `experiments/`에 AI 생성물의 토큰 준수율을 측정한 실험이 들어 있다. 조건 3종, 생성물 9개, 회차별 판정 결과.
@@ -43,6 +57,20 @@ npx tsx scripts/run-experiment.ts
 | B 토큰 제공 | 80      | 80  | 0    | 0         | 0            |
 | C 토큰 부족 | 80      | 78  | 0    | 0         | 2            |
 
+같은 생성물을 런타임으로 재판정한 결과. `experiments/runtime-results.txt`.
+
+```bash
+npx tsx scripts/run-experiment-runtime.ts
+```
+
+| 조건        | 판정 | ok  | near | violation | uncomputable |
+| ----------- | ---- | --- | ---- | --------- | ------------ |
+| A 지시만    | 240  | 11  | 40   | 189       | 0            |
+| B 토큰 제공 | 114  | 114 | 0    | 0         | 0            |
+| C 토큰 부족 | 119  | 117 | 0    | 2         | 0            |
+
+정적의 `uncomputable` 2건이 런타임에서 `violation` 2건이 됐다. 판정 단위가 달라 건수는 비교 대상이 아니다. 비교할 것은 값의 집합이고 아홉 회차 중 여섯은 두 집합이 같다.
+
 ## 상태
 
 개발 중이다. CLI 진입점은 아직 없다. 검사 코어의 동작은 `npm test`로 확인한다.
@@ -52,10 +80,11 @@ npm install
 npm test
 ```
 
-`fixtures/`의 `clean.css`와 `dirty.css`로 검사기 자체를 먼저 검증한다. 표현 방식이 달라도 값이 같으면 통과해야 하고, 심어둔 위반은 정확히 그 종류로 잡혀야 한다. 이 테스트가 통과하기 전의 검사 결과는 신뢰하지 않는다.
+`fixtures/`의 `clean.css`/`dirty.css`(정적)와 `clean.html`/`dirty.html`(런타임)로 검사기 자체를 먼저 검증한다. 런타임 테스트는 브라우저가 필요하다. `npx playwright install chromium`. 표현 방식이 달라도 값이 같으면 통과해야 하고, 심어둔 위반은 정확히 그 종류로 잡혀야 한다. 이 테스트가 통과하기 전의 검사 결과는 신뢰하지 않는다.
 
 ## 글
 
-만드는 과정과 그 사이에 검사기가 다섯 번 틀린 기록.
+만드는 과정과 그 사이에 검사기가 틀린 기록.
 
-[토큰을 다 지켰는데 버튼이 검정이 됐다](https://tomorrow-whatever.tistory.com/3)
+1. [토큰을 다 지켰는데 버튼이 검정이 됐다](https://tomorrow-whatever.tistory.com/3) — 정적 검사. 검사기가 다섯 번 틀렸다.
+2. [검사기가 못 본 색을 브라우저에게 물었다](https://tomorrow-whatever.tistory.com/4) — 런타임 검사. 여섯 번째와 그 반대 방향.
