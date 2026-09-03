@@ -1,4 +1,4 @@
-browser: chromium 141.0.7390.37
+browser: chromium 151.0.7922.34
 
 == 판정 분포 (정적 / 런타임) ==
 회차                   ok          near     violation alpha-variant unknown-token  uncomputable     건수
