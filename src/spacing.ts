@@ -203,6 +203,60 @@ function readPage(rootSelector: string | null): { values: RawValue[]; gaps: RawG
   if (!root) return { values, gaps };
   const elements = [root, ...root.querySelectorAll('*')];
 
+  /**
+   * margin: 0 auto 는 계산된 값으로 읽으면 296px 같은 수가 나온다.
+   * 가운데 정렬의 결과일 뿐 스케일과 아무 관계가 없어서, 토큰에 대고 판정하면
+   * 거의 항상 스케일 밖으로 잡힌다. 선언이 auto 인 자리는 판정에서 뺀다.
+   */
+  const autoMargins: Array<[string, Set<string>]> = [];
+  const SIDES = ['top', 'right', 'bottom', 'left'];
+  for (const sheet of [...document.styleSheets]) {
+    let rules: CSSRuleList;
+    try {
+      rules = sheet.cssRules;
+    } catch {
+      continue; // 교차 출처 스타일시트
+    }
+    for (const rule of [...rules]) {
+      if (!(rule instanceof CSSStyleRule)) continue;
+      const props = new Set<string>();
+      const short = rule.style.getPropertyValue('margin').trim();
+      if (short.includes('auto')) {
+        const parts = short.split(/\s+/);
+        const four =
+          parts.length === 1
+            ? [parts[0], parts[0], parts[0], parts[0]]
+            : parts.length === 2
+              ? [parts[0], parts[1], parts[0], parts[1]]
+              : parts.length === 3
+                ? [parts[0], parts[1], parts[2], parts[1]]
+                : parts;
+        four.forEach((v, i) => {
+          if (v === 'auto') props.add(`margin-${SIDES[i]}`);
+        });
+      }
+      for (const side of SIDES) {
+        if (rule.style.getPropertyValue(`margin-${side}`).trim() === 'auto') props.add(`margin-${side}`);
+      }
+      for (const [logical, physical] of [
+        ['margin-inline', ['margin-left', 'margin-right']],
+        ['margin-block', ['margin-top', 'margin-bottom']],
+      ] as const) {
+        if (rule.style.getPropertyValue(logical).includes('auto')) physical.forEach((p) => props.add(p));
+      }
+      if (props.size > 0) autoMargins.push([rule.selectorText, props]);
+    }
+  }
+  const isAuto = (el: Element, prop: string): boolean =>
+    autoMargins.some(([sel, props]) => {
+      if (!props.has(prop)) return false;
+      try {
+        return el.matches(sel);
+      } catch {
+        return false;
+      }
+    });
+
   const PROPS = [
     'padding-top',
     'padding-right',
@@ -225,6 +279,7 @@ function readPage(rootSelector: string | null): { values: RawValue[]; gaps: RawG
       // gap 은 쓰이지 않으면 normal 로 답한다. 0px 마진·패딩은 판정에서 통과하지만
       // 전부 세면 요소 수 × 10 이 대상이 되므로 아무것도 만들지 않는 값은 버린다.
       if (v === 'normal' || v === '0px' || v === '') continue;
+      if (prop.startsWith('margin-') && isAuto(el, prop)) continue;
       values.push({ selector: path, prop, value: v });
     }
 
