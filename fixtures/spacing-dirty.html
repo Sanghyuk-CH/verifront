@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root {
+        --space-1: 4px;
+        --space-2: 8px;
+        --space-3: 12px;
+        --space-4: 16px;
+        --space-5: 20px;
+        --space-6: 24px;
+        --space-8: 32px;
+        --space-10: 40px;
+        --space-12: 48px;
+        --space-16: 64px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-size: 16px;
+      }
+      .wrap {
+        width: 300px;
+      }
+      .item {
+        height: 40px;
+        background: #ddd;
+      }
+
+      /* 값 층 — 토큰 위에 있는 값 */
+      .v-ok {
+        padding: var(--space-4);
+      }
+      /* 값 층 — 최소 스텝 절반 안으로 밀린 값. near */
+      .v-near {
+        padding: 13px;
+      }
+      /* 값 층 — 어느 토큰에서도 2px 이상 떨어진 값. off-scale */
+      .v-off {
+        padding: 22px;
+      }
+      /* 값 층 — 브라우저가 풀어주지 않는 값. unresolved */
+      .v-unresolved {
+        display: flex;
+        gap: 5%;
+        width: 333px;
+      }
+
+      /* 기하 층 — 선언과 화면이 갈라지는 자리 */
+      #g1 .a {
+        margin-bottom: var(--space-4);
+      }
+      #g1 .b {
+        margin-top: var(--space-4);
+      }
+
+      #g2 .a {
+        margin-bottom: var(--space-4);
+      }
+      #g2 .b {
+        margin-top: var(--space-6);
+      }
+
+      #g3 {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+
+      #g4 {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+      #g4 .b {
+        margin-top: var(--space-2);
+      }
+
+      #g5 .a {
+        margin-bottom: var(--space-4);
+      }
+      #g5 .b {
+        margin-top: -8px;
+      }
+
+      #g6 .a {
+        margin-bottom: var(--space-4);
+      }
+      #g6 .b {
+        transform: translateY(8px);
+      }
+
+      #g7 .a {
+        margin-bottom: var(--space-4);
+      }
+      #g7 .filler {
+        margin: var(--space-3) 0;
+      }
+      #g7 .b {
+        margin-top: var(--space-4);
+      }
+
+      #g8 .a {
+        margin-bottom: var(--space-4);
+      }
+      #g8 .b {
+        margin-top: var(--space-4);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="v-ok">ok</div>
+    <div class="v-near">near</div>
+    <div class="v-off">off-scale</div>
+    <div class="v-unresolved"><i>a</i><i>b</i></div>
+
+    <div class="wrap" id="g1">
+      <div class="item a"></div>
+      <div class="item b"></div>
+    </div>
+    <div class="wrap" id="g2">
+      <div class="item a"></div>
+      <div class="item b"></div>
+    </div>
+    <div class="wrap" id="g3">
+      <div class="item a"></div>
+      <div class="item b"></div>
+    </div>
+    <div class="wrap" id="g4">
+      <div class="item a"></div>
+      <div class="item b"></div>
+    </div>
+    <div class="wrap" id="g5">
+      <div class="item a"></div>
+      <div class="item b"></div>
+    </div>
+    <div class="wrap" id="g6">
+      <div class="item a"></div>
+      <div class="item b"></div>
+    </div>
+    <div class="wrap" id="g7">
+      <div class="item a"></div>
+      <div class="filler"></div>
+      <div class="item b"></div>
+    </div>
+    <div class="wrap" id="g8">
+      <div class="item a"></div>
+      <div class="holder"><div class="item b"></div></div>
+    </div>
+  </body>
+</html>
