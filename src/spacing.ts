@@ -183,6 +183,9 @@ interface RawGap {
 function readPage(rootSelector: string | null): { values: RawValue[]; gaps: RawGap[] } {
   const values: RawValue[] = [];
   const gaps: RawGap[] = [];
+  // 축을 정할 때 쓰는 여유. 좌표 격자(1/64px)보다 크고 최소 스텝보다 훨씬 작다.
+  // readPage 는 직렬화되어 페이지 안에서 실행된다. 바깥 상수를 참조할 수 없다.
+  const EPS_GEOM = 0.5;
 
   const sig = (el: Element): string => {
     const tag = el.tagName.toLowerCase();
@@ -293,11 +296,6 @@ function readPage(rootSelector: string | null): { values: RawValue[]; gaps: RawG
     const csEl = getComputedStyle(el);
     const isFlex = csEl.display === 'flex' || csEl.display === 'inline-flex';
     const isGrid = csEl.display === 'grid' || csEl.display === 'inline-grid';
-    const row = isFlex && csEl.flexDirection.startsWith('row');
-    const axis: 'vertical' | 'horizontal' = row ? 'horizontal' : 'vertical';
-
-    const gapProp = axis === 'vertical' ? csEl.rowGap : csEl.columnGap;
-    const gapPx = /^(-?\d*\.?\d+)px$/.test(gapProp) ? Number(gapProp.replace('px', '')) : 0;
 
     for (let i = 1; i < kids.length; i++) {
       const a = kids[i - 1]!;
@@ -306,6 +304,42 @@ function readPage(rootSelector: string | null): { values: RawValue[]; gaps: RawG
       const rb = b.getBoundingClientRect();
       if (ra.width === 0 && ra.height === 0) continue;
       if (rb.width === 0 && rb.height === 0) continue;
+
+      /**
+       * 축은 부모의 display 가 아니라 실제로 그려진 위치에서 정한다.
+       * 일반 흐름 안의 인라인 요소는 한 줄에 나란히 놓인다.
+       * 부모가 flex 가 아니라는 이유로 세로로 재면 -15px 같은 수가 나온다.
+       * 그 수는 폰트 폭에 따라 환경마다 달라져서 판정으로 쓸 수 없다.
+       */
+      let axis: 'vertical' | 'horizontal';
+      if (rb.top >= ra.bottom - EPS_GEOM) axis = 'vertical';
+      else if (rb.left >= ra.right - EPS_GEOM) axis = 'horizontal';
+      else continue; // 두 축 모두 겹친다. 인접한 쌍이 아니다
+
+      /**
+       * 두 요소 사이에 글자가 있으면 그 폭은 여백이 아니다.
+       * 작성자 · 날짜 처럼 가운데점이 텍스트 노드로 들어간 자리가 그렇다.
+       */
+      let between = a.nextSibling;
+      let hasText = false;
+      while (between && between !== b) {
+        if (between.nodeType === Node.TEXT_NODE && (between.textContent ?? '').trim() !== '') hasText = true;
+        between = between.nextSibling;
+      }
+      if (hasText) continue;
+
+      /**
+       * 일반 흐름에서 인라인 레벨 요소가 낀 쌍은 건너뛴다.
+       * 인라인 상자와 다음 블록 사이의 거리에는 그 요소가 속한 라인 박스의
+       * half-leading 이 섞인다. 폰트 어센더·디센더에서 나오는 값이라 환경마다 달라지고,
+       * 마진으로 설명되지 않는다. flex·grid 안에서는 자식이 블록화되므로 해당하지 않는다.
+       */
+      const inlineLevel = (d: string) => d.startsWith('inline') || d === 'contents';
+      if (!isFlex && !isGrid && (inlineLevel(getComputedStyle(a).display) || inlineLevel(getComputedStyle(b).display)))
+        continue;
+
+      const gapProp = axis === 'vertical' ? csEl.rowGap : csEl.columnGap;
+      const gapPx = /^(-?\d*\.?\d+)px$/.test(gapProp) ? Number(gapProp.replace('px', '')) : 0;
 
       const actual = axis === 'vertical' ? rb.top - ra.bottom : rb.left - ra.right;
 
