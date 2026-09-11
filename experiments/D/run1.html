@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>프로젝트</title>
+    <style>
+      :root {
+        /* color tokens */
+        --color-surface: #ffffff;
+        --color-surface-raised: #f9fafb;
+        --color-border: #e5e7eb;
+        --color-text: #111827;
+        --color-text-muted: #6b7280;
+        --color-primary: #3b82f6;
+        --color-primary-hover: #2563eb;
+        --color-primary-fg: #ffffff;
+        --color-success: #16a34a;
+        --color-success-soft: #dcfce7;
+        --color-warning: #ca8a04;
+        --color-warning-soft: #fef9c3;
+        --color-disabled: #d1d5db;
+        --color-disabled-fg: #9ca3af;
+
+        /* space tokens */
+        --space-1: 4px;
+        --space-2: 8px;
+        --space-3: 12px;
+        --space-4: 16px;
+        --space-5: 20px;
+        --space-6: 24px;
+        --space-8: 32px;
+        --space-10: 40px;
+        --space-12: 48px;
+        --space-16: 64px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: var(--space-10);
+        background-color: var(--color-surface-raised);
+        color: var(--color-text);
+        font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+        line-height: 1.5;
+      }
+
+      /* ── list ───────────────────────────── */
+      .card-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        width: 520px;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+      }
+
+      /* ── card ───────────────────────────── */
+      .card {
+        padding: var(--space-5);
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 10px;
+        transition: border-color 120ms ease;
+      }
+
+      .card:hover {
+        border-color: var(--color-primary);
+      }
+
+      /* ── badge ──────────────────────────── */
+      .badge {
+        display: inline-block;
+        margin: 0 0 var(--space-3);
+        padding: var(--space-1) var(--space-3);
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+
+      .badge-active {
+        background-color: var(--color-primary);
+        color: var(--color-primary-fg);
+      }
+
+      .badge-done {
+        background-color: var(--color-success-soft);
+        color: var(--color-success);
+      }
+
+      .badge-hold {
+        background-color: var(--color-warning-soft);
+        color: var(--color-warning);
+      }
+
+      /* ── text ───────────────────────────── */
+      .card-title {
+        margin: 0 0 var(--space-2);
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      .card-desc {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        overflow: hidden;
+        margin: 0 0 var(--space-3);
+        color: var(--color-text-muted);
+        font-size: 14px;
+      }
+
+      .card-meta {
+        margin: 0;
+        color: var(--color-text-muted);
+        font-size: 13px;
+      }
+
+      .card-meta .sep {
+        margin: 0 var(--space-2);
+        color: var(--color-border);
+      }
+
+      /* ── actions ────────────────────────── */
+      .card-actions {
+        display: flex;
+        gap: var(--space-2);
+        margin-top: var(--space-4);
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--color-border);
+      }
+
+      .btn {
+        padding: var(--space-2) var(--space-4);
+        border: 1px solid transparent;
+        border-radius: 6px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 120ms ease;
+      }
+
+      .btn:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 2px;
+      }
+
+      .btn-primary {
+        background-color: var(--color-primary);
+        color: var(--color-primary-fg);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--color-primary-hover);
+      }
+
+      .btn-secondary {
+        background-color: var(--color-surface);
+        border-color: var(--color-border);
+        color: var(--color-text);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--color-surface-raised);
+      }
+
+      .btn-secondary:disabled {
+        background-color: var(--color-surface);
+        border-color: var(--color-disabled);
+        color: var(--color-disabled-fg);
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="card-list">
+      <li class="card">
+        <span class="badge badge-active">진행중</span>
+        <h3 class="card-title">결제 실패 재시도 정책</h3>
+        <p class="card-desc">
+          카드 승인이 거절됐을 때 언제 다시 시도할지, 몇 번까지 시도할지를 정리하고 있습니다. 결제사별 응답 코드를 먼저
+          분류하는 중입니다.
+        </p>
+        <p class="card-meta">김하늘<span class="sep">·</span>9월 10일 수정</p>
+        <div class="card-actions">
+          <button type="button" class="btn btn-primary">열기</button>
+          <button type="button" class="btn btn-secondary">보관</button>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="badge badge-done">완료</span>
+        <h3 class="card-title">온보딩 이메일 3종 개편</h3>
+        <p class="card-desc">
+          가입 직후 보내는 안내 메일의 문구와 순서를 다시 썼습니다. 첫 주 열람률이 이전 대비 눈에 띄게 올랐습니다.
+        </p>
+        <p class="card-meta">정우진<span class="sep">·</span>8월 28일 수정</p>
+        <div class="card-actions">
+          <button type="button" class="btn btn-primary">열기</button>
+          <button type="button" class="btn btn-secondary">보관</button>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="badge badge-hold">보류</span>
+        <h3 class="card-title">주문 내역 CSV 내보내기</h3>
+        <p class="card-desc">
+          관리자가 기간을 골라 주문 목록을 내려받는 기능입니다. 데이터 보관 정책이 정리될 때까지 작업을 멈춰 둔
+          상태입니다.
+        </p>
+        <p class="card-meta">박서연<span class="sep">·</span>7월 3일 수정</p>
+        <div class="card-actions">
+          <button type="button" class="btn btn-primary">열기</button>
+          <button type="button" class="btn btn-secondary" disabled>보관</button>
+        </div>
+      </li>
+    </ul>
+  </body>
+</html>

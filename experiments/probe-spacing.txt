@@ -1,0 +1,43 @@
+browser: chromium 151.0.7922.34
+
+## A. 16px 을 여러 방식으로 선언했을 때 브라우저가 답하는 값
+
+| #  | declaration                            | getComputedStyle | getBoundingClientRect |
+|----|----------------------------------------|------------------|-----------------------|
+| 1  | padding: 16px                          | 16px             | 16                    |
+| 2  | padding: 1rem  (root 16px)             | 16px             | 16                    |
+| 3  | padding: 1em  (self font-size 16px)    | 16px             | 16                    |
+| 4  | padding: 1em  (self font-size 13.33px) | 13.33px          | 13.328125             |
+| 5  | padding: 0.9rem                        | 14.4px           | 14.390625             |
+| 6  | padding: calc(1rem - 0.001px)          | 15.999px         | 15.984375             |
+| 7  | padding: 5%  (parent width 320px)      | 16px             | 16                    |
+| 8  | padding: 5%  (parent width 333px)      | 16.6406px        | 16.640625             |
+| 9  | gap: 1rem                              | 16px             | 16                    |
+| 10 | gap: 5%  (width 333px)                 | 5%               | 16.640625             |
+| 11 | padding: 1rem  (zoom: 1.1)             | 16px             | 17.59375              |
+| 12 | padding: 1vw  (viewport 1280px)        | 12.8px           | 12.796875             |
+
+
+## B. 선언된 값과 화면의 실제 여백
+
+| # | CSS 선언                                                         | computed a.margin-bottom | computed b.margin-top | computed gap | 실제 여백 |
+|---|----------------------------------------------------------------|--------------------------|-----------------------|--------------|-------|
+| 1 | margin-bottom 16px  +  margin-top 16px                         | 16px                     | 16px                  | -            | 16px  |
+| 2 | margin-bottom 16px  +  margin-top 24px                         | 16px                     | 24px                  | -            | 24px  |
+| 3 | flex gap 16px, 마진 없음                                           | 0px                      | 0px                   | 16px         | 16px  |
+| 4 | flex gap 16px  +  margin-top 8px                               | 0px                      | 8px                   | 16px         | 24px  |
+| 5 | margin-bottom 16px  +  margin-top -8px                         | 16px                     | -8px                  | -            | 8px   |
+| 6 | margin-bottom 16px  +  translateY(8px)                         | 16px                     | 0px                   | -            | 24px  |
+| 7 | margin-bottom 16px  +  [빈 div margin 12px]  +  margin-top 16px | 16px                     | 16px                  | -            | 16px  |
+| 8 | margin-bottom 16px  +  래퍼 안 자식의 margin-top 16px                | 16px                     | 16px                  | -            | 16px  |
+
+
+## C. 배율과 루트 글자 크기
+
+| 조건                  | padding: 16px | padding: 1rem | padding: 0.9rem | rect(0.9rem) |
+|---------------------|---------------|---------------|-----------------|--------------|
+| DPR 1, root 16px    | 16px          | 16px          | 14.4px          | 14.390625    |
+| DPR 1.25, root 16px | 16px          | 16px          | 14.4px          | 14.390625    |
+| DPR 2, root 16px    | 16px          | 16px          | 14.4px          | 14.390625    |
+| DPR 1, root 15px    | 16px          | 15px          | 13.5px          | 13.5         |
+| DPR 1, root 20px    | 16px          | 20px          | 18px            | 18           |
