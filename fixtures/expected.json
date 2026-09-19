@@ -26,5 +26,41 @@
     "alpha-variant": 2,
     "unknown-token": 0,
     "uncomputable": 0
+  },
+  "figma/clean.html": {
+    "ok": 106,
+    "near": 0,
+    "wrong-token": 0,
+    "off-scale": 0,
+    "misplaced": 0,
+    "violation": 0,
+    "alpha-variant": 0,
+    "missing": 0,
+    "unmatched": 0,
+    "unmeasurable": 0
+  },
+  "figma/reshaped.html": {
+    "ok": 106,
+    "near": 0,
+    "wrong-token": 0,
+    "off-scale": 0,
+    "misplaced": 0,
+    "violation": 0,
+    "alpha-variant": 0,
+    "missing": 0,
+    "unmatched": 0,
+    "unmeasurable": 0
+  },
+  "figma/dirty.html": {
+    "ok": 60,
+    "near": 12,
+    "wrong-token": 14,
+    "off-scale": 2,
+    "misplaced": 1,
+    "violation": 3,
+    "alpha-variant": 1,
+    "missing": 1,
+    "unmatched": 1,
+    "unmeasurable": 8
   }
 }

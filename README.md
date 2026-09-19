@@ -43,6 +43,40 @@ transition 도중에 읽으면 보간 중간값이 나온다. 같은 값이 두 
 
 브라우저는 Playwright의 Chromium을 쓴다. `VERIFRONT_CHROME`에 실행 파일 경로를 주면 그것을 쓴다.
 
+## 시안 대조
+
+`src/design.ts`. 피그마 노드를 화면의 요소와 짝지은 뒤 자리마다 여백과 색을 시안의 값과 맞춘다. 스케일 검사는 "이 값이 토큰인가"를 묻고 시안 대조는 "이 자리의 값이 시안의 값인가"를 묻는다. 16px 자리에 들어간 8px은 스케일 검사를 통과한다. 둘 다 토큰이기 때문이다.
+
+시안은 `GET /v1/files/:key/nodes`로 한 번 받아 `experiments/figma/snapshot.json`에 저장하고 판정은 저장본으로 한다. Tier 1 엔드포인트라 Starter 플랜의 파일과 View·Collab 좌석은 월 단위 한도에 묶인다. 저장본에는 파일 키와 썸네일 링크를 남기지 않는다.
+
+```bash
+read -rs FIGMA_TOKEN && export FIGMA_TOKEN   # 스코프는 file_content:read 하나
+npx tsx scripts/figma-pull.ts card-list="<프레임 링크>" --dry
+npx tsx scripts/figma-pull.ts card-list="<프레임 링크>"
+npx tsx scripts/check-design.ts page.html
+```
+
+짝짓기에 클래스 이름을 쓰지 않는다. 생성물마다 다르기 때문이다. 글자가 같은 노드와 요소를 먼저 잇고, 프레임은 짝지어진 자손들의 공통 조상으로 올리고, 남은 노드는 문서 순서로 채운다. 칠도 선도 없는 묶음 프레임은 화면에 상자가 없을 수 있어 풀어헤친다. 이웃 요소의 테두리로 그린 구분선도 선으로 받는다.
+
+여백은 좌표로 잰다. 피그마는 기본값에서 선이 배치에 끼지 않고 CSS의 border는 항상 낀다. 패딩 선언끼리 맞추면 이 차이를 놓친다.
+
+| 판정            | 뜻                                                          |
+| --------------- | ----------------------------------------------------------- |
+| `ok`            | 시안과 같다                                                 |
+| `near`          | 여백은 최소 스텝의 절반 안, 색은 ΔE00 1.0 안에서 어긋났다   |
+| `wrong-token`   | 토큰이긴 한데 이 자리의 토큰이 아니다                       |
+| `off-scale`     | 여백이 시안과도 스케일과도 맞지 않는다                      |
+| `misplaced`     | 순서나 배치 방향이 시안과 다르다                            |
+| `violation`     | 색이 시안과도 토큰과도 맞지 않는다                          |
+| `alpha-variant` | 색은 같고 알파만 다르다                                     |
+| `missing`       | 시안에 있는 선이 화면에 없다                                |
+| `unmatched`     | 짝이 되는 요소를 찾지 못했다                                |
+| `unmeasurable`  | 짝은 있지만 재지 않았다                                     |
+
+`unmeasurable`의 사유는 셋이다. 두 노드가 화면에서 한 상자에 겹친 경우, 줄 상자가 여백을 보태는 인라인 요소, 불투명도가 1 미만인 요소. 인라인 요소는 크기가 0인 탐침으로 줄 상자를 재서 실제로 여백을 보탠 변만 뺀다.
+
+시안에서 화면 방향으로만 본다. 화면에만 있는 테두리나 그림자는 잡지 않는다. 글자 상자의 옆 변은 정렬된 쪽만 비교한다. 폭과 글꼴은 검사하지 않는다.
+
 ## 실험
 
 `experiments/`에 AI 생성물의 토큰 준수율을 측정한 실험이 들어 있다. 조건 3종, 생성물 9개, 회차별 판정 결과.
@@ -80,7 +114,7 @@ npm install
 npm test
 ```
 
-`fixtures/`의 `clean.css`/`dirty.css`(정적)와 `clean.html`/`dirty.html`(런타임)로 검사기 자체를 먼저 검증한다. 런타임 테스트는 브라우저가 필요하다. `npx playwright install chromium`. 표현 방식이 달라도 값이 같으면 통과해야 하고, 심어둔 위반은 정확히 그 종류로 잡혀야 한다. 이 테스트가 통과하기 전의 검사 결과는 신뢰하지 않는다.
+`fixtures/`의 `clean.css`/`dirty.css`(정적), `clean.html`/`dirty.html`(런타임), `figma/`의 합성 스냅숏과 `clean`/`reshaped`/`dirty`(시안 대조)로 검사기 자체를 먼저 검증한다. `reshaped.html`은 clean과 같은 화면을 다른 구조로 만든 것이라 판정이 clean과 같아야 한다. 런타임 테스트는 브라우저가 필요하다. `npx playwright install chromium`. 표현 방식이 달라도 값이 같으면 통과해야 하고, 심어둔 위반은 정확히 그 종류로 잡혀야 한다. 이 테스트가 통과하기 전의 검사 결과는 신뢰하지 않는다.
 
 ## 글
 

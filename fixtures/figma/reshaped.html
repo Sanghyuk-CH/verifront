@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>design reshaped</title>
+    <!--
+      clean.html 과 같은 화면을 다른 구조로 만들었다. 판정은 전부 ok 여야 한다.
+      짝짓기를 흔드는 것만 넣었다.
+        1. 카드 목록이 ul/li 이고 목록 바깥에 감싸는 요소가 하나 더 있다
+        2. 묶음 프레임(Header, Body)에 해당하는 요소가 없다
+        3. 배지가 일반 흐름의 inline-block 이다. 카드의 줄 높이를 배지 글자와 맞춰 줄 상자가 여백을 보태지 않는다
+        4. 구분선이 요소가 아니라 버튼 줄의 border-top 이다
+        5. 버튼 라벨이 span 으로 한 겹 더 싸여 있다
+        6. 2번과 3번 카드의 제목이 시안과 서로 바뀌었다. 글자 앵커가 다른 카드에 붙는다
+    -->
+    <style>
+      body { margin: 0; padding: 40px; background: #f9fafb; font-family: system-ui, sans-serif; }
+      .page { width: 560px; }
+      .list { margin: 0; padding: 0; list-style: none; }
+      .card { padding: 20px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 12px; line-height: 16px; }
+      .card + .card { margin-top: 16px; }
+      .badge { display: inline-block; margin-bottom: 8px; padding: 4px 8px; border-radius: 999px; font-size: 12px; line-height: 16px; font-weight: 600; }
+      .badge-active { background: #3b82f6; color: #ffffff; }
+      .badge-done { background: #dcfce7; color: #16a34a; }
+      .badge-hold { background: #fef9c3; color: #ca8a04; }
+      .title { margin: 0 0 16px; font-size: 16px; line-height: 24px; font-weight: 600; color: #111827; }
+      .desc { margin: 0 0 4px; font-size: 14px; line-height: 20px; color: #6b7280; }
+      .meta { margin: 0; font-size: 13px; line-height: 20px; color: #6b7280; }
+      .actions { display: flex; align-items: flex-start; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e7eb; }
+      .btn { display: inline-flex; font: inherit; font-size: 14px; line-height: 20px; font-weight: 500; padding: 8px 16px; border: 0; border-radius: 6px; }
+      .btn-primary { background: #3b82f6; color: #ffffff; }
+      .btn-secondary { background: #ffffff; color: #111827; border: 1px solid #e5e7eb; }
+      .btn-secondary:disabled { background: #d1d5db; color: #9ca3af; border: 0; }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <ul class="list">
+        <li class="card">
+          <span class="badge badge-active">진행중</span>
+          <h3 class="title">검색 필터 개선</h3>
+          <p class="desc">검색 결과에 기간과 작성자 필터를 추가합니다. 필터 상태는 주소에 남깁니다.</p>
+          <p class="meta">김하늘 · 9월 3일 수정</p>
+          <div class="actions">
+            <button type="button" class="btn btn-primary"><span>열기</span></button>
+            <button type="button" class="btn btn-secondary"><span>보관</span></button>
+          </div>
+        </li>
+        <li class="card">
+          <span class="badge badge-done">완료</span>
+          <h3 class="title">빌드 캐시 정리</h3>
+          <p class="desc">알림 종류별로 켜고 끌 수 있게 했습니다. 기본값은 모두 켜짐입니다.</p>
+          <p class="meta">박서준 · 8월 21일 수정</p>
+          <div class="actions">
+            <button type="button" class="btn btn-primary"><span>열기</span></button>
+            <button type="button" class="btn btn-secondary"><span>보관</span></button>
+          </div>
+        </li>
+        <li class="card">
+          <span class="badge badge-hold">보류</span>
+          <h3 class="title">알림 설정 화면</h3>
+          <p class="desc">캐시 키 규칙이 정해지면 다시 시작합니다. 지금은 수동으로 비웁니다.</p>
+          <p class="meta">이도윤 · 7월 30일 수정</p>
+          <div class="actions">
+            <button type="button" class="btn btn-primary"><span>열기</span></button>
+            <button type="button" class="btn btn-secondary" disabled><span>보관</span></button>
+          </div>
+        </li>
+      </ul>
+    </main>
+  </body>
+</html>
