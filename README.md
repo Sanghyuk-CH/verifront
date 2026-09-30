@@ -31,10 +31,22 @@ npx verifront design page.html     # 화면의 여백과 색 ↔ 피그마 시�
 
 | 구분   | 판정                                                                                   |
 | ------ | -------------------------------------------------------------------------------------- |
-| 실패   | `near`, `violation`, `unknown-token`, `off-scale`, `wrong-token`, `misplaced`, `missing` |
-| 보고만 | `alpha-variant`, `uncomputable`, `unresolved`, `mismatch`, `unmatched`, `unmeasurable`   |
+| 실패   | `near`, `violation`, `unknown-token`, `off-scale`, `wrong-token`, `misplaced`, `missing`, `unmatched` |
+| 보고만 | `alpha-variant`, `uncomputable`, `unresolved`, `mismatch`, `unmeasurable`                            |
 
-보고만 하는 판정은 검사하지 못한 자리이거나 검사기의 한계다. 생성물의 위반으로 치지 않는다. `alpha-variant`는 색이 같고 알파만 다른 자리라 의도일 수 있다.
+보고만 하는 판정은 검사하지 못한 자리다. 생성물의 위반으로 치지 않는다. `alpha-variant`는 색이 같고 알파만 다른 자리라 의도일 수 있다.
+
+`unmatched`는 짝짓기가 실패한 자리라 검사기의 한계일 수도 있다. 그래도 실패로 친다. 보고로 두면 문제 있는 요소를 지우는 것만으로 실패가 줄어든다. 실제 생성물에서 메타 줄 셋을 지우자 실패가 32개에서 29개로 줄었다.
+
+## 스킬
+
+`skills/verifront-check/`는 Claude Code 스킬이다. 화면을 만든 모델이 완료라고 말하기 전에 verifront를 돌리고, 실패를 고치고, 마지막 검사 결과를 보고하게 한다.
+
+```bash
+cp -r skills/verifront-check <작업 폴더>/.claude/skills/
+```
+
+작업 폴더에 verifront와 `verifront.config.json`이 있어야 한다. 스킬은 설치된 verifront만 부르고 npm에서 받아 오지 않는다. 검사는 최대 3회 돌린다.
 
 ## 판정
 

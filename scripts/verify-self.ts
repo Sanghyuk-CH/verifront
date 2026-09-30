@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { checkCss, loadTokens, type Verdict } from '../src/check.ts';
 import { checkRuntime } from '../src/runtime.ts';
 import { loadSpaceTokens } from '../src/spacing.ts';
@@ -86,6 +87,11 @@ for (const [file, exp] of Object.entries(expected) as [string, Record<Counted, n
 
 // CLI 종료 코드. 스킬은 이 숫자로 통과를 판단한다. 판정이 맞아도 종료 코드가 틀리면 루프가 틀린다
 {
+  const clean = fs.readFileSync('fixtures/figma/clean.html', 'utf8');
+  const cut = path.join(os.tmpdir(), 'verifront-cut.html');
+  const removed = clean.replace(/<p class="meta">[^<]*<\/p>/, '');
+  if (removed === clean) throw new Error('지울 메타 줄을 찾지 못했다. fixtures/figma/clean.html 이 바뀌었다');
+  fs.writeFileSync(cut, removed);
   const cases: [string[], number][] = [
     [['tokens', 'fixtures/clean.css', '--tokens', 'fixtures/tokens.json'], 0],
     [['tokens', 'fixtures/dirty.css', '--tokens', 'fixtures/tokens.json'], 1],
@@ -96,6 +102,8 @@ for (const [file, exp] of Object.entries(expected) as [string, Record<Counted, n
     [['design', 'fixtures/figma/dirty.html', '--tokens', 'fixtures/figma/tokens.json', '--snapshot', 'fixtures/figma/card.json'], 1],
     // 스냅숏 없이 design 을 부르면 건너뛰고 0 이 아니라 오류다
     [['design', 'fixtures/figma/clean.html', '--tokens', 'fixtures/figma/tokens.json'], 2],
+    // 요소를 지워서 실패를 없앨 수 없어야 한다. clean 에서 메타 줄 하나를 지운 것
+    [['design', cut, '--tokens', 'fixtures/figma/tokens.json', '--snapshot', 'fixtures/figma/card.json'], 1],
     [['nope', 'fixtures/clean.css'], 2],
   ];
   const log = console.log;
@@ -112,7 +120,7 @@ for (const [file, exp] of Object.entries(expected) as [string, Record<Counted, n
     }
     const ok = got === want;
     if (!ok) failed = true;
-    console.log(`${ok ? '✓' : '✗'} cli ${args.slice(0, 2).join(' ')}${args.includes('--snapshot') || args[0] !== 'design' ? '' : ' (스냅숏 없음)'}  기대 ${want}  실제 ${got}`);
+    console.log(`${ok ? '✓' : '✗'} cli ${args[0]} ${args[1] === cut ? '(메타 줄 삭제)' : args[1]}${args.includes('--snapshot') || args[0] !== 'design' ? '' : ' (스냅숏 없음)'}  기대 ${want}  실제 ${got}`);
   }
 }
 

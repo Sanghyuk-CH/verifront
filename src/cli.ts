@@ -34,6 +34,9 @@ export const FAILING = new Set([
   'wrong-token',
   'misplaced',
   'missing',
+  // 짝을 못 찾은 노드. 검사기의 한계일 수도 있지만 실패로 친다.
+  // 보고로 두면 문제 있는 요소를 지우는 것만으로 실패가 줄어든다. 지울수록 점수가 오르는 검사는 쓸 수 없다
+  'unmatched',
 ]);
 
 type Command = 'check' | 'tokens' | 'runtime' | 'spacing' | 'design';
@@ -100,7 +103,7 @@ const HELP = `verifront ${VERSION}
   0 실패 판정 없음 · 1 실패 판정 있음 · 2 사용법이나 설정 오류
 
 실패: ${[...FAILING].join(', ')}
-보고만: alpha-variant, uncomputable, unresolved, mismatch, unmatched, unmeasurable
+보고만: alpha-variant, uncomputable, unresolved, mismatch, unmeasurable
 
 브라우저는 Playwright 의 Chromium 을 쓴다. VERIFRONT_CHROME 에 실행 파일 경로를 주면 그것을 쓴다.`;
 
