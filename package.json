@@ -1,6 +1,6 @@
 {
   "name": "verifront",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "프론트엔드 결과물이 맞는지 숫자로 판정하는 CLI",
   "type": "module",
   "license": "MIT",
@@ -13,6 +13,9 @@
     "cli"
   ],
   "author": "Sanghyuk Choi",
+  "bin": {
+    "verifront": "./dist/cli.js"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc",

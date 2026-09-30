@@ -5,6 +5,7 @@ import { checkRuntime } from '../src/runtime.ts';
 import { loadSpaceTokens } from '../src/spacing.ts';
 import { loadDesign, type Snapshot } from '../src/figma.ts';
 import { checkDesign, type DesignVerdict } from '../src/design.ts';
+import { run } from '../src/cli.ts';
 
 /** expected.json 에 적힌 판정만 센다. */
 type Counted = Verdict | DesignVerdict;
@@ -80,6 +81,38 @@ for (const [file, exp] of Object.entries(expected) as [string, Record<Counted, n
       if (f.verdict === 'ok') continue;
       console.log(`      ${f.where.padEnd(28)} ${f.prop.padEnd(18)} ${f.raw.padEnd(28)} ${f.verdict.padEnd(14)} ${f.token ?? ''} ${f.distance ?? ''}`);
     }
+  }
+}
+
+// CLI 종료 코드. 스킬은 이 숫자로 통과를 판단한다. 판정이 맞아도 종료 코드가 틀리면 루프가 틀린다
+{
+  const cases: [string[], number][] = [
+    [['tokens', 'fixtures/clean.css', '--tokens', 'fixtures/tokens.json'], 0],
+    [['tokens', 'fixtures/dirty.css', '--tokens', 'fixtures/tokens.json'], 1],
+    [['runtime', 'fixtures/clean.html', '--tokens', 'fixtures/tokens.json'], 0],
+    [['runtime', 'fixtures/dirty.html', '--tokens', 'fixtures/tokens.json'], 1],
+    [['design', 'fixtures/figma/clean.html', '--tokens', 'fixtures/figma/tokens.json', '--snapshot', 'fixtures/figma/card.json'], 0],
+    [['design', 'fixtures/figma/reshaped.html', '--tokens', 'fixtures/figma/tokens.json', '--snapshot', 'fixtures/figma/card.json'], 0],
+    [['design', 'fixtures/figma/dirty.html', '--tokens', 'fixtures/figma/tokens.json', '--snapshot', 'fixtures/figma/card.json'], 1],
+    // 스냅숏 없이 design 을 부르면 건너뛰고 0 이 아니라 오류다
+    [['design', 'fixtures/figma/clean.html', '--tokens', 'fixtures/figma/tokens.json'], 2],
+    [['nope', 'fixtures/clean.css'], 2],
+  ];
+  const log = console.log;
+  const err = console.error;
+  for (const [args, want] of cases) {
+    console.log = () => {};
+    console.error = () => {};
+    let got: number;
+    try {
+      got = await run(args);
+    } finally {
+      console.log = log;
+      console.error = err;
+    }
+    const ok = got === want;
+    if (!ok) failed = true;
+    console.log(`${ok ? '✓' : '✗'} cli ${args.slice(0, 2).join(' ')}${args.includes('--snapshot') || args[0] !== 'design' ? '' : ' (스냅숏 없음)'}  기대 ${want}  실제 ${got}`);
   }
 }
 

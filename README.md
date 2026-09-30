@@ -6,6 +6,36 @@ v0.1은 CSS의 색상 값이 디자인 토큰을 지켰는지 검사한다. `#3b
 
 검사 축은 둘이다. 정적 검사는 CSS 파일의 선언을 읽고 런타임 검사는 브라우저에 띄워 실제로 그려진 값을 읽는다. 판정 척도는 같은 코드를 쓴다.
 
+## 사용
+
+```bash
+npx verifront check page.html      # 설정으로 돌릴 수 있는 검사를 전부 돌린다
+npx verifront tokens style.css     # 선언된 색 ↔ 토큰 (정적)
+npx verifront runtime page.html    # 브라우저가 그린 색 ↔ 토큰
+npx verifront spacing page.html    # 화면의 여백 ↔ 간격 스케일
+npx verifront design page.html     # 화면의 여백과 색 ↔ 피그마 시안
+```
+
+설정은 작업 폴더의 `verifront.config.json`에서 읽는다. 경로는 설정 파일 기준이다.
+
+```json
+{
+  "tokens": ["tokens.json", "tokens-space.json"],
+  "design": { "snapshot": "design/snapshot.json", "frame": "card-list" }
+}
+```
+
+`--json`은 판정을 JSON으로 내고 `--all`은 `ok`도 낸다. 설정 대신 `--tokens`, `--snapshot`, `--frame`을 쓸 수 있다.
+
+종료 코드는 셋이다. 0은 실패 판정 없음, 1은 실패 판정 있음, 2는 사용법이나 설정 오류다. `design`을 직접 불렀는데 스냅숏이 없으면 건너뛰지 않고 2로 끝난다. 건너뛴 검사가 통과처럼 보이면 안 된다.
+
+| 구분   | 판정                                                                                   |
+| ------ | -------------------------------------------------------------------------------------- |
+| 실패   | `near`, `violation`, `unknown-token`, `off-scale`, `wrong-token`, `misplaced`, `missing` |
+| 보고만 | `alpha-variant`, `uncomputable`, `unresolved`, `mismatch`, `unmatched`, `unmeasurable`   |
+
+보고만 하는 판정은 검사하지 못한 자리이거나 검사기의 한계다. 생성물의 위반으로 치지 않는다. `alpha-variant`는 색이 같고 알파만 다른 자리라 의도일 수 있다.
+
 ## 판정
 
 | 판정            | 뜻                                             |
@@ -107,7 +137,7 @@ npx tsx scripts/run-experiment-runtime.ts
 
 ## 상태
 
-개발 중이다. CLI 진입점은 아직 없다. 검사 코어의 동작은 `npm test`로 확인한다.
+개발 중이다. npm에는 아직 올리지 않았다. 검사 코어와 CLI 종료 코드는 `npm test`로 확인한다.
 
 ```bash
 npm install
