@@ -1,5 +1,5 @@
 // 생성물 12개를 시안 스냅숏에 대고 판정한다.
-// 실행: npx tsx scripts/run-design-experiment.ts [스냅숏] [이름]
+// 실행: npx tsx scripts/run-design-experiment.ts [스냅숏] [이름] [--conditions E0,E1]
 //   기본 스냅숏 experiments/figma/snapshot.json, 기본 이름 card-list
 //
 // 모델은 시안을 본 적이 없다. 그래서 시안 일치율은 모델의 실력이 아니다. 재는 것은 둘이다.
@@ -8,6 +8,8 @@
 //      세 회차가 서로 다르면 어떤 시안을 가져와도 그 자리는 적어도 한 회차가 틀린다.
 //
 // 자리는 시안의 구조가 정한다. 값은 정하지 않는다. 구조가 같은 시안이면 2번의 숫자는 바뀌지 않는다.
+//
+// 7편의 E 조건은 다르다. 모델이 시안 명세(design.md)를 받는다. 시안 일치율이 곧 재려는 값이다.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -17,7 +19,11 @@ import { loadDesign, type Snapshot } from '../src/figma.ts';
 import { checkDesign, type DesignFinding, type DesignVerdict } from '../src/design.ts';
 
 const dir = path.join(process.cwd(), 'experiments');
-const [snapPath = path.join(dir, 'figma', 'snapshot.json'), label = 'card-list'] = process.argv.slice(2);
+// --conditions E0,E1 로 조건을 고른다. 기본은 6편의 A~D 다. 6편의 표는 기본값으로 그대로 재현된다
+const argv = process.argv.slice(2);
+const ci = argv.indexOf('--conditions');
+const CONDITIONS = ci >= 0 ? argv.splice(ci, 2)[1]!.split(',') : ['A', 'B', 'C', 'D'];
+const [snapPath = path.join(dir, 'figma', 'snapshot.json'), label = 'card-list'] = argv;
 if (!fs.existsSync(snapPath)) {
   console.error(`스냅숏이 없다: ${snapPath}`);
   console.error('먼저 받는다: npx tsx scripts/figma-pull.ts card-list="<프레임 링크>"');
@@ -30,7 +36,6 @@ const tokens = {
   space: loadSpaceTokens(JSON.parse(fs.readFileSync(path.join(dir, 'tokens-space.json'), 'utf8'))),
 };
 
-const CONDITIONS = ['A', 'B', 'C', 'D'] as const;
 const SPACE_V: DesignVerdict[] = ['ok', 'near', 'wrong-token', 'off-scale', 'misplaced', 'unmeasurable'];
 const COLOR_V: DesignVerdict[] = ['ok', 'near', 'wrong-token', 'violation', 'alpha-variant', 'missing', 'unmeasurable'];
 const isSpace = (f: DesignFinding) => /^(gap|inset)-/.test(f.prop);
@@ -62,6 +67,10 @@ async function main() {
   for (const c of CONDITIONS) {
     for (const r of [1, 2, 3]) {
       const file = path.join(dir, c, `run${r}.html`);
+      if (!fs.existsSync(file)) {
+        console.error(`회차 파일이 없다: ${path.relative(process.cwd(), file)}`);
+        process.exit(1);
+      }
       const res = await checkDesign(fs.readFileSync(file, 'utf8'), design, tokens, {
         executablePath: process.env.VERIFRONT_CHROME,
       });
