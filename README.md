@@ -147,6 +147,45 @@ npx tsx scripts/run-experiment-runtime.ts
 
 정적의 `uncomputable` 2건이 런타임에서 `violation` 2건이 됐다. 판정 단위가 달라 건수는 비교 대상이 아니다. 비교할 것은 값의 집합이고 아홉 회차 중 여섯은 두 집합이 같다.
 
+간격 검사. 간격 토큰을 준 조건 D를 더해 생성물 12개. `experiments/spacing-results.txt`.
+
+```bash
+npx tsx scripts/run-spacing-experiment.ts
+```
+
+| 조건          | 간격 값 | 스케일 적중률 | near | off-scale | 토큰 이름 사용률 | mismatch |
+| ------------- | ------- | ------------- | ---- | --------- | ---------------- | -------- |
+| A 지시만      | 266     | 50.0%         | 37   | 96        | 0.0%             | 12       |
+| B 토큰 제공   | 240     | 46.3%         | 51   | 78        | 0.0%             | 3        |
+| C 토큰 부족   | 232     | 58.6%         | 48   | 48        | 0.0%             | 0        |
+| D 간격 토큰   | 234     | 100.0%        | 0    | 0         | 94.4%            | 0        |
+
+같은 12개를 시안에 대 본 결과. 모델은 시안을 본 적이 없다. `experiments/design-results.txt`.
+
+```bash
+npx tsx scripts/run-design-experiment.ts
+```
+
+| 조건        | 여백 시안 일치율 | 여백 스케일 통과 · 시안 불일치 | 색 시안 일치율 | wrong-token |
+| ----------- | ---------------- | ------------------------------ | -------------- | ----------- |
+| A 지시만    | 28.8%            | 56                             | 14.0%          | 24          |
+| B 토큰 제공 | 29.7%            | 48                             | 93.9%          | 31          |
+| C 토큰 부족 | 42.8%            | 53                             | 89.5%          | 33          |
+| D 간격 토큰 | 45.6%            | 106                            | 93.9%          | 67          |
+
+시안 명세를 주고 검사 스킬을 주거나 주지 않은 조건. E0은 조건 D 프롬프트와 `design.md`만, E1은 거기에 `verifront-check` 스킬과 패키지를 더 받는다. 작업 폴더는 `scripts/make-workspace.ts`로 레포 밖에 만들고 `scripts/collect-run.ts`로 생성물과 세션 로그를 모은다. `experiments/design-results-E.txt`.
+
+```bash
+npx tsx scripts/run-design-experiment.ts --conditions E0,E1
+```
+
+| 조건         | 여백 시안 일치율 | 여백 스케일 통과 · 시안 불일치 | 색 시안 일치율 | wrong-token |
+| ------------ | ---------------- | ------------------------------ | -------------- | ----------- |
+| E0 명세만    | 84.3%            | 32                             | 100.0%         | 0           |
+| E1 명세+스킬 | 100.0%           | 0                              | 100.0%         | 0           |
+
+E0의 불일치 32자리는 두 회차가 선이 없는 버튼에 `border: 1px solid transparent`를 넣어 글자 안쪽 여백이 1px씩 늘어난 것이다. E1은 세 회차 모두 스킬로 검사했다. 모델은 `claude-opus-5`, `claude -p`로 돌렸고 `--setting-sources project,local`로 사용자 설정을 뺐다. E1 1회차는 Playwright 브라우저가 없어 모델이 설치한 뒤 검사했다.
+
 ## 상태
 
 개발 중이다. npm에는 아직 올리지 않았다. 검사 코어와 CLI 종료 코드는 `npm test`로 확인한다.
@@ -164,3 +203,5 @@ npm test
 
 1. [토큰을 다 지켰는데 버튼이 검정이 됐다](https://tomorrow-whatever.tistory.com/3) — 정적 검사. 검사기가 다섯 번 틀렸다.
 2. [검사기가 못 본 색을 브라우저에게 물었다](https://tomorrow-whatever.tistory.com/4) — 런타임 검사. 여섯 번째와 그 반대 방향.
+3. [16px 두 개를 붙였더니 16px이 됐다](https://tomorrow-whatever.tistory.com/5) — 간격 검사. 선언된 값과 화면의 여백이 갈라지는 자리.
+4. [여백이 전부 토큰이었는데 시안과 달랐다](https://tomorrow-whatever.tistory.com/6) — 시안 대조. 스케일 검사는 자리를 묻지 않는다.
