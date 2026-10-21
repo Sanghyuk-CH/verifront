@@ -18,8 +18,8 @@ import { execFileSync } from 'node:child_process';
 const args = process.argv.slice(2);
 const force = args.includes('--force');
 const [wsArg, cond, runArg] = args.filter((a) => a !== '--force');
-if (!wsArg || (cond !== 'E0' && cond !== 'E1' && cond !== 'E1b') || !/^[1-9]$/.test(runArg ?? '')) {
-  console.error("사용법: npx tsx scripts/collect-run.ts <작업 폴더> E0|E1|E1b <회차> [--force]");
+if (!wsArg || !['E0', 'E1', 'E1b', 'E1n'].includes(cond ?? '') || !/^[1-9]$/.test(runArg ?? '')) {
+  console.error("사용법: npx tsx scripts/collect-run.ts <작업 폴더> E0|E1|E1b|E1n <회차> [--force]");
   process.exit(2);
 }
 
@@ -30,7 +30,7 @@ if (!fs.existsSync(html)) {
   process.exit(2);
 }
 
-const outDir = path.join(process.cwd(), 'experiments', cond);
+const outDir = path.join(process.cwd(), 'experiments', cond!);
 const outHtml = path.join(outDir, `run${runArg}.html`);
 const outLog = path.join(outDir, `run${runArg}.jsonl`);
 if (!force && (fs.existsSync(outHtml) || fs.existsSync(outLog))) {
@@ -89,6 +89,15 @@ const esc = (s: string) => JSON.stringify(s).slice(1, -1);
 let redacted = raw;
 for (const p of new Set([ws, path.resolve(wsArg)])) redacted = redacted.split(esc(p)).join('<workspace>');
 redacted = redacted.split(esc(os.homedir())).join('~');
+// 하네스가 시스템 메시지에 계정 이메일을 넣는다. 공개 레포에 올라가므로 가린다
+const email = (() => {
+  try {
+    return execFileSync('git', ['config', 'user.email'], { encoding: 'utf8' }).trim();
+  } catch {
+    return '';
+  }
+})();
+if (email) redacted = redacted.split(email).join('<email>');
 
 fs.mkdirSync(outDir, { recursive: true });
 fs.copyFileSync(html, outHtml);

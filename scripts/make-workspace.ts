@@ -1,5 +1,5 @@
 // 7편 실험의 작업 폴더를 만든다. 모델은 이 폴더 안에서만 일한다.
-// 실행: npx tsx scripts/make-workspace.ts E0|E1|E1b <폴더>
+// 실행: npx tsx scripts/make-workspace.ts E0|E1|E1b|E1n <폴더>
 //
 // 두 조건이 받는 것
 //   PROMPT.md          조건 D 프롬프트 + 시안과 결과 파일 안내. 두 조건이 한 글자도 다르지 않다
@@ -7,7 +7,10 @@
 //   tokens.json, tokens-space.json
 // E1b 는 E1 과 같고 프롬프트 끝에 스킬을 쓰라는 한 줄이 붙는다.
 //   E1 세 회차가 모두 스킬을 부르지 않았을 때만 돌리는 예비 조건이다
-// E1·E1b 만 받는 것
+// E1n 은 E1 과 같고 스킬에서 테두리 노하우만 뺀다. 남는 것은 검사기와 판정 읽는 법이다.
+//   E1 세 회차가 첫 검사에서 모두 통과했다. 스킬의 테두리 문단을 생성 전에 읽고 E0 의 실패를 피했다.
+//   검사 루프가 실제로 고치는지는 이 조건에서 잰다. 빼는 문장은 STRIP_E1N 에 있다
+// E1·E1b·E1n 만 받는 것
 //   .claude/skills/verifront-check/   스킬
 //   verifront.config.json, design/snapshot.json
 //   node_modules/verifront            레포에서 npm pack 으로 만든 것. npm 레지스트리에서 받지 않는다
@@ -21,9 +24,26 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 const repo = process.cwd();
+
+/** E1n 에서 스킬에서 빼는 문장. [찾을 문장, 바꿀 문장]. 테두리로 1px 밀리는 함정과 그 처방만 뺀다 */
+const STRIP_E1N: Record<string, [string, string][]> = {
+  'SKILL.md': [
+    ['`padding: 16px`이 테두리 때문에 화면에서 17px이 되는 식으로, 선언한 값과', '선언한 값과'],
+    [
+      '\n1px 차이가 테두리 때문이면 패딩을 15px로 줄이지 않는다. `design`은 통과해도 `spacing`이 15px을 스케일 밖 값으로 잡는다. 대신 시안에서 그 요소에 선이 있는지 본다. 선이 없는 요소에 투명 테두리를 깔아 두면 내용이 1px씩 밀린다. 테두리는 시안에 선이 있는 요소에만 준다.\n',
+      '',
+    ],
+  ],
+  'references/verdicts.md': [
+    [
+      '  - 테두리가 원인이면 시안에서 그 요소에 선이 있는지 본다. 선이 없는데 투명 테두리가 있으면 테두리를 없앤다. 선이 있고 "선 배치 포함"이면 시안의 간격이 이미 테두리를 포함하므로 기대 값도 1px 크다.\n  - 패딩을 15px처럼 줄여 맞추지 않는다. `design`은 통과해도 `spacing`이 스케일 밖 값으로 잡는다.\n',
+      '',
+    ],
+  ],
+};
 const [cond, dirArg] = process.argv.slice(2);
-if ((cond !== 'E0' && cond !== 'E1' && cond !== 'E1b') || !dirArg) {
-  console.error('사용법: npx tsx scripts/make-workspace.ts E0|E1|E1b <폴더>');
+if (!['E0', 'E1', 'E1b', 'E1n'].includes(cond ?? '') || !dirArg) {
+  console.error('사용법: npx tsx scripts/make-workspace.ts E0|E1|E1b|E1n <폴더>');
   process.exit(2);
 }
 if (!fs.existsSync(path.join(repo, 'skills/verifront-check/SKILL.md'))) {
@@ -86,14 +106,28 @@ for (const f of ['tokens.json', 'tokens-space.json']) fs.copyFileSync(path.join(
 
 // ── E1 만 ────────────────────────────────────────────────
 
-if (cond === 'E1' || cond === 'E1b') {
+if (cond === 'E1' || cond === 'E1b' || cond === 'E1n') {
   fs.mkdirSync(path.join(dir, 'design'));
   fs.copyFileSync(snapshot, path.join(dir, 'design', 'snapshot.json'));
   fs.writeFileSync(
     path.join(dir, 'verifront.config.json'),
     JSON.stringify({ tokens: ['tokens.json', 'tokens-space.json'], design: { snapshot: 'design/snapshot.json', frame: 'card-list' } }, null, 2) + '\n',
   );
-  fs.cpSync(path.join(repo, 'skills', 'verifront-check'), path.join(dir, '.claude', 'skills', 'verifront-check'), { recursive: true });
+  const skillDir = path.join(dir, '.claude', 'skills', 'verifront-check');
+  fs.cpSync(path.join(repo, 'skills', 'verifront-check'), skillDir, { recursive: true });
+  if (cond === 'E1n') {
+    for (const [file, cuts] of Object.entries(STRIP_E1N)) {
+      const p = path.join(skillDir, file);
+      let text = fs.readFileSync(p, 'utf8');
+      for (const [from, to] of cuts) {
+        // 스킬 문구가 바뀌어 지울 문장을 못 찾으면 멈춘다. 조용히 넘어가면 E1n 이 E1 과 같아진다
+        if (text.split(from).length !== 2) throw new Error(`E1n: ${file} 에서 지울 문장을 정확히 한 번 찾지 못했다\n${from}`);
+        text = text.replace(from, to);
+      }
+      if (/투명 테두리|15px/.test(text)) throw new Error(`E1n: ${file} 에 테두리 노하우가 남았다`);
+      fs.writeFileSync(p, text);
+    }
+  }
 
   // 레포의 현재 코드로 패키지를 만든다. 실험 시점의 검사기가 무엇이었는지 커밋으로 추적된다
   run('npm', ['run', 'build']);
