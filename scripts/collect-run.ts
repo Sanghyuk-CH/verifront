@@ -96,7 +96,8 @@ fs.writeFileSync(outLog, redacted);
 
 // ── 요약 ─────────────────────────────────────────────────
 
-const entries: Entry[] = raw
+// 경로를 가린 뒤의 로그로 센다. 작업 폴더 경로(~/verifront-runs/...)가 verifront 실행으로 잡히지 않게
+const entries: Entry[] = redacted
   .split('\n')
   .filter(Boolean)
   .map((l) => {
@@ -117,8 +118,12 @@ const blocks = (e: Entry): Block[] => (Array.isArray(e.message?.content) ? (e.me
 const assistant = entries.filter((e) => e.type === 'assistant');
 const tools = assistant.flatMap(blocks).filter((b) => b.type === 'tool_use');
 const models = [...new Set(assistant.map((e) => e.message?.model).filter(Boolean))] as string[];
-const checks = tools.filter((b) => /check\.sh|verifront/.test(b.input?.command ?? ''));
-const skillLoaded = tools.some((b) => b.name === 'Skill' || /verifront-check[\\/]SKILL\.md$/.test(b.input?.file_path ?? ''));
+// 검사기를 실제로 돌린 명령만 센다. SKILL.md 나 verifront.config.json 을 cat 한 것은 실행이 아니다
+const checks = tools.filter((b) => /check\.sh|npx\s+verifront\b|\.bin[\\/]verifront\b|dist[\\/]cli\.js/.test(b.input?.command ?? ''));
+// Read 로 열든 Bash 의 cat 으로 열든 스킬을 읽은 것으로 센다
+const skillLoaded = tools.some(
+  (b) => b.name === 'Skill' || /verifront-check[\\/]SKILL\.md$/.test(b.input?.file_path ?? '') || /verifront-check[\\/]SKILL\.md/.test(b.input?.command ?? ''),
+);
 const times = entries.map((e) => e.timestamp).filter(Boolean).sort() as string[];
 const lastText = [...assistant]
   .reverse()
