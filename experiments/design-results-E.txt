@@ -1,0 +1,87 @@
+시안: GET /v1/files/:key/nodes · Untitled · card-list · version 2402593114351086916
+토큰: 색 14개, 간격 10개
+
+## 짝짓기
+
+| run | 노드 | 글자 | 끌어올림 | 순서 | 테두리 | 못 찾음 | 풀어헤친 묶음 |
+|-----|----|----|------|----|-----|------|---------|
+| E01 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E02 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E03 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E11 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E12 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E13 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+
+## 여백 — 이 자리의 값이 시안의 값인가
+
+| run | 자리 | ok | near | wrong-token | off-scale | misplaced | unmeasurable | 시안 일치율 |
+|-----|----|----|------|-------------|-----------|-----------|--------------|--------|
+| E01 | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
+| E02 | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
+| E03 | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
+| E11 | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
+| E12 | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
+| E13 | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
+
+## 여백 — 5편의 스케일 검사와 나란히
+
+같은 자리의 화면 값을 스케일에만 대 본 결과와 시안에 대 본 결과. 순서가 바뀐 자리와 못 잰 자리는 뺐다.
+
+| run | 잰 자리 | 스케일 통과 | 시안 일치  | 스케일 통과 · 시안 불일치 |
+|-----|------|--------|--------|-----------------|
+| E01 | 68   | 100.0% | 76.5%  | 16              |
+| E02 | 68   | 100.0% | 76.5%  | 16              |
+| E03 | 68   | 100.0% | 100.0% | 0               |
+| E11 | 68   | 100.0% | 100.0% | 0               |
+| E12 | 68   | 100.0% | 100.0% | 0               |
+| E13 | 68   | 100.0% | 100.0% | 0               |
+
+## 색 — 이 자리의 색이 시안의 색인가
+
+| run | 자리 | ok | near | wrong-token | violation | alpha-variant | missing | unmeasurable | 시안 일치율 |
+|-----|----|----|------|-------------|-----------|---------------|---------|--------------|--------|
+| E01 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E02 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E03 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E11 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E12 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E13 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+
+## 조건별 합계
+
+| 조건 | 여백 시안 일치율 | 여백 스케일 통과 · 시안 불일치 | 색 시안 일치율 | wrong-token (여백+색) |
+|----|-----------|--------------------|----------|--------------------|
+| E0 | 84.3%     | 32                 | 100.0%   | 0                  |
+| E1 | 100.0%    | 0                  | 100.0%   | 0                  |
+
+## 회차 간 일치 — 시안의 값과 상관없는 하한
+
+세 회차가 모두 잰 여백 자리만 센다. 자리마다 가장 많이 나온 값에서 벗어난 회차 수를 더한 것이 하한이다.
+어떤 시안도 한 자리에 값을 하나만 줄 수 있으니 이만큼은 반드시 틀린다.
+
+| 조건 | 세 회차가 다 잰 자리 | 세 회차가 같은 자리 | 칸   | 최소 불일치 칸 | 어떤 시안에도 최대 일치율 |
+|----|--------------|-------------|-----|----------|----------------|
+| E0 | 68           | 52          | 204 | 16       | 92.2%          |
+| E1 | 68           | 68          | 204 | 0        | 100.0%         |
+
+### E0 — 회차마다 값이 다른 자리
+
+| 자리                                                                   | E01  | E02  | E03  |
+|----------------------------------------------------------------------|------|------|------|
+| inset-left Card list / Card#1 / Actions / Button/Primary ▸ Label     | 17px | 17px | 16px |
+| inset-right Card list / Card#1 / Actions / Button/Primary ▸ Label    | 17px | 17px | 16px |
+| inset-top Card list / Card#1 / Actions / Button/Primary ▸ Label      | 9px  | 9px  | 8px  |
+| inset-bottom Card list / Card#1 / Actions / Button/Primary ▸ Label   | 9px  | 9px  | 8px  |
+| inset-left Card list / Card#2 / Actions / Button/Primary ▸ Label     | 17px | 17px | 16px |
+| inset-right Card list / Card#2 / Actions / Button/Primary ▸ Label    | 17px | 17px | 16px |
+| inset-top Card list / Card#2 / Actions / Button/Primary ▸ Label      | 9px  | 9px  | 8px  |
+| inset-bottom Card list / Card#2 / Actions / Button/Primary ▸ Label   | 9px  | 9px  | 8px  |
+| inset-left Card list / Card#3 / Actions / Button/Primary ▸ Label     | 17px | 17px | 16px |
+| inset-right Card list / Card#3 / Actions / Button/Primary ▸ Label    | 17px | 17px | 16px |
+| inset-top Card list / Card#3 / Actions / Button/Primary ▸ Label      | 9px  | 9px  | 8px  |
+| inset-bottom Card list / Card#3 / Actions / Button/Primary ▸ Label   | 9px  | 9px  | 8px  |
+| inset-left Card list / Card#3 / Actions / Button/Secondary ▸ Label   | 17px | 17px | 16px |
+| inset-right Card list / Card#3 / Actions / Button/Secondary ▸ Label  | 17px | 17px | 16px |
+| inset-top Card list / Card#3 / Actions / Button/Secondary ▸ Label    | 9px  | 9px  | 8px  |
+| inset-bottom Card list / Card#3 / Actions / Button/Secondary ▸ Label | 9px  | 9px  | 8px  |
+
