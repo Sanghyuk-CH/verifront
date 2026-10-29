@@ -8,7 +8,8 @@
     "commit": "e1b864c",
     "toolCalls": 4,
     "verifrontRuns": 0,
-    "skillLoaded": false
+    "skillLoaded": false,
+    "snapshotRead": false
   },
   "run2": {
     "models": [
@@ -19,7 +20,8 @@
     "commit": "e1b864c",
     "toolCalls": 3,
     "verifrontRuns": 0,
-    "skillLoaded": false
+    "skillLoaded": false,
+    "snapshotRead": false
   },
   "run3": {
     "models": [
@@ -30,6 +32,7 @@
     "commit": "e1b864c",
     "toolCalls": 4,
     "verifrontRuns": 0,
-    "skillLoaded": false
+    "skillLoaded": false,
+    "snapshotRead": false
   }
 }

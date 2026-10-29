@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>프로젝트 카드 리스트</title>
+<style>
+  :root {
+    /* color tokens */
+    --color-surface: #ffffff;
+    --color-surface-raised: #f9fafb;
+    --color-border: #e5e7eb;
+    --color-text: #111827;
+    --color-text-muted: #6b7280;
+    --color-primary: #3b82f6;
+    --color-primary-hover: #2563eb;
+    --color-primary-fg: #ffffff;
+    --color-success: #16a34a;
+    --color-success-soft: #dcfce7;
+    --color-warning: #ca8a04;
+    --color-warning-soft: #fef9c3;
+    --color-disabled: #d1d5db;
+    --color-disabled-fg: #9ca3af;
+
+    /* space tokens */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: var(--space-8);
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    background: var(--color-surface-raised);
+    color: var(--color-text);
+  }
+
+  /* Card list — 세로 · 간격 16 · 패딩 0 · 폭 고정 560 */
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    width: 560px;
+  }
+
+  /* Card — 세로 · 간격 16 · 패딩 20 · 모서리 12 · 선 1 INSIDE */
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    width: 100%;
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface);
+  }
+
+  .card:hover {
+    border-color: var(--color-primary);
+  }
+
+  /* Header — 세로 · 간격 8 */
+  .card__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    width: 100%;
+  }
+
+  /* Badge — 가로 · 패딩 4/8/4/8 · 모서리 999 */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+  }
+
+  .badge--progress {
+    background: var(--color-primary);
+    color: var(--color-primary-fg);
+  }
+
+  .badge--done {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+  }
+
+  .badge--hold {
+    background: var(--color-warning-soft);
+    color: var(--color-warning);
+  }
+
+  /* Title — 16/600 · 줄 높이 24 */
+  .card__title {
+    width: 100%;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: var(--color-text);
+  }
+
+  /* Body — 세로 · 간격 4 */
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    width: 100%;
+  }
+
+  /* Description — 14/400 · 줄 높이 20 */
+  .card__description {
+    width: 100%;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--color-text-muted);
+  }
+
+  /* Meta — 13/400 · 줄 높이 20 */
+  .card__meta {
+    width: 100%;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+    color: var(--color-text-muted);
+  }
+
+  /* Divider — 폭 채우기 · 높이 1 */
+  .card__divider {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+    border: 0;
+    background: var(--color-border);
+  }
+
+  /* Actions — 가로 · 간격 8 */
+  .card__actions {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  /* Button — 패딩 8/16/8/16 · 모서리 6 · 14/500 · 줄 높이 20 */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  .button--primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-primary-fg);
+  }
+
+  .button--primary:hover {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+  }
+
+  .button--secondary {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .button--secondary:disabled {
+    background: var(--color-disabled);
+    border-color: var(--color-disabled);
+    color: var(--color-disabled-fg);
+    cursor: default;
+  }
+</style>
+</head>
+<body>
+
+<div class="card-list">
+
+  <article class="card">
+    <div class="card__header">
+      <span class="badge badge--progress">진행중</span>
+      <h3 class="card__title">검색 필터 개선</h3>
+    </div>
+    <div class="card__body">
+      <p class="card__description">검색 결과에 기간과 작성자 필터를 추가합니다. 필터 상태는 주소에 남깁니다.</p>
+      <p class="card__meta">김하늘 · 9월 3일 수정</p>
+    </div>
+    <hr class="card__divider">
+    <div class="card__actions">
+      <button type="button" class="button button--primary">열기</button>
+      <button type="button" class="button button--secondary">보관</button>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card__header">
+      <span class="badge badge--done">완료</span>
+      <h3 class="card__title">알림 설정 화면</h3>
+    </div>
+    <div class="card__body">
+      <p class="card__description">알림 종류별로 켜고 끌 수 있게 했습니다. 기본값은 모두 켜짐입니다.</p>
+      <p class="card__meta">박서준 · 8월 21일 수정</p>
+    </div>
+    <hr class="card__divider">
+    <div class="card__actions">
+      <button type="button" class="button button--primary">열기</button>
+      <button type="button" class="button button--secondary">보관</button>
+    </div>
+  </article>
+
+  <article class="card">
+    <div class="card__header">
+      <span class="badge badge--hold">보류</span>
+      <h3 class="card__title">빌드 캐시 정리</h3>
+    </div>
+    <div class="card__body">
+      <p class="card__description">캐시 키 규칙이 정해지면 다시 시작합니다. 지금은 수동으로 비웁니다.</p>
+      <p class="card__meta">이도윤 · 7월 30일 수정</p>
+    </div>
+    <hr class="card__divider">
+    <div class="card__actions">
+      <button type="button" class="button button--primary">열기</button>
+      <button type="button" class="button button--secondary" disabled>보관</button>
+    </div>
+  </article>
+
+</div>
+
+</body>
+</html>

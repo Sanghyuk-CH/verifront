@@ -18,8 +18,8 @@ import { execFileSync } from 'node:child_process';
 const args = process.argv.slice(2);
 const force = args.includes('--force');
 const [wsArg, cond, runArg] = args.filter((a) => a !== '--force');
-if (!wsArg || !['E0', 'E1', 'E1b', 'E1n'].includes(cond ?? '') || !/^[1-9]$/.test(runArg ?? '')) {
-  console.error("사용법: npx tsx scripts/collect-run.ts <작업 폴더> E0|E1|E1b|E1n <회차> [--force]");
+if (!wsArg || !['E0', 'E0c', 'E0s', 'E1', 'E1b', 'E1n'].includes(cond ?? '') || !/^[1-9]$/.test(runArg ?? '')) {
+  console.error("사용법: npx tsx scripts/collect-run.ts <작업 폴더> E0|E0c|E0s|E1|E1b|E1n <회차> [--force]");
   process.exit(2);
 }
 
@@ -97,7 +97,8 @@ const email = (() => {
     return '';
   }
 })();
-if (email) redacted = redacted.split(email).join('<email>');
+// git 설정과 하네스가 아는 계정 이메일이 다를 수 있다. 둘 다 가린다
+for (const e of new Set([email, process.env.CLAUDE_CODE_USER_EMAIL ?? ''])) if (e) redacted = redacted.split(e).join('<email>');
 
 fs.mkdirSync(outDir, { recursive: true });
 fs.copyFileSync(html, outHtml);
@@ -128,7 +129,18 @@ const assistant = entries.filter((e) => e.type === 'assistant');
 const tools = assistant.flatMap(blocks).filter((b) => b.type === 'tool_use');
 const models = [...new Set(assistant.map((e) => e.message?.model).filter(Boolean))] as string[];
 // 검사기를 실제로 돌린 명령만 센다. SKILL.md 나 verifront.config.json 을 cat 한 것은 실행이 아니다
-const checks = tools.filter((b) => /check\.sh|npx\s+verifront\b|\.bin[\\/]verifront\b|dist[\\/]cli\.js/.test(b.input?.command ?? ''));
+// 명령을 ; && | 로 나눈 조각마다 본다. cat check.sh 처럼 파일을 읽기만 한 조각은 실행이 아니다
+const READERS = /^(cat|head|tail|less|more|sed|grep|wc|ls|file|stat|echo|printf)\b/;
+const runsVerifront = (cmd: string) =>
+  cmd
+    .split(/&&|\|\||;|\||\n/)
+    .map((p) => p.trim().replace(/^cd\s+\S+\s*/, ''))
+    .some((p) => !READERS.test(p) && /check\.sh|npx\s+(--no-install\s+)?verifront\b|\.bin[\\/]verifront\b|dist[\\/]cli\.js/.test(p));
+const checks = tools.filter((b) => runsVerifront(b.input?.command ?? ''));
+// 스냅숏을 열어 본 호출. Read 로 열었거나 명령에 snapshot.json 이 들어 있으면 센다. 설정 파일을 cat 한 것은 세지 않는다
+const snapshotRead = tools.some(
+  (b) => /snapshot\.json$/.test(b.input?.file_path ?? '') || /snapshot\.json/.test(b.input?.command ?? ''),
+);
 // Read 로 열든 Bash 의 cat 으로 열든 스킬을 읽은 것으로 센다
 const skillLoaded = tools.some(
   (b) => b.name === 'Skill' || /verifront-check[\\/]SKILL\.md$/.test(b.input?.file_path ?? '') || /verifront-check[\\/]SKILL\.md/.test(b.input?.command ?? ''),
@@ -150,6 +162,7 @@ meta[`run${runArg}`] = {
   toolCalls: tools.length,
   verifrontRuns: checks.length,
   skillLoaded,
+  snapshotRead,
 };
 fs.writeFileSync(metaFile, JSON.stringify(meta, null, 2) + '\n');
 
@@ -158,8 +171,8 @@ console.log(`  생성물   ${path.relative(process.cwd(), outHtml)}`);
 console.log(`  로그     ${path.relative(process.cwd(), outLog)}  (${(redacted.length / 1024).toFixed(0)}KB)`);
 console.log(`  모델     ${models.join(', ') || '(로그에 없음)'}`);
 console.log(`  시간     ${times[0] ?? '-'} → ${times[times.length - 1] ?? '-'}`);
-console.log(`  도구 호출 ${tools.length} · verifront 실행 ${checks.length} · 스킬 로드 ${skillLoaded ? '예' : '아니오'}`);
-if (cond === 'E0' && (checks.length || skillLoaded)) console.warn('  ⚠ E0 인데 verifront 를 불렀다. 작업 폴더가 오염됐는지 본다');
+console.log(`  도구 호출 ${tools.length} · verifront 실행 ${checks.length} · 스킬 로드 ${skillLoaded ? '예' : '아니오'} · 스냅숏 읽음 ${snapshotRead ? '예' : '아니오'}`);
+if ((cond === 'E0' || cond === 'E0c' || cond === 'E0s') && (checks.length || skillLoaded)) console.warn('  ⚠ E0 인데 verifront 를 불렀다. 작업 폴더가 오염됐는지 본다');
 if (models.length > 1) console.warn('  ⚠ 모델이 둘 이상이다. 세션 중에 바뀌었는지 본다');
 if (lastText) {
   console.log('  마지막 응답 (앞 400자)');

@@ -1,5 +1,5 @@
 // 7편 실험의 작업 폴더를 만든다. 모델은 이 폴더 안에서만 일한다.
-// 실행: npx tsx scripts/make-workspace.ts E0|E1|E1b|E1n <폴더>
+// 실행: npx tsx scripts/make-workspace.ts E0|E0c|E0s|E1|E1b|E1n <폴더>
 //
 // 두 조건이 받는 것
 //   PROMPT.md          조건 D 프롬프트 + 시안과 결과 파일 안내. 두 조건이 한 글자도 다르지 않다
@@ -10,6 +10,11 @@
 // E1n 은 E1 과 같고 스킬에서 테두리 노하우만 뺀다. 남는 것은 검사기와 판정 읽는 법이다.
 //   E1 세 회차가 첫 검사에서 모두 통과했다. 스킬의 테두리 문단을 생성 전에 읽고 E0 의 실패를 피했다.
 //   검사 루프가 실제로 고치는지는 이 조건에서 잰다. 빼는 문장은 STRIP_E1N 에 있다
+// E0c 는 E0 과 같다. 맥이 아닌 리눅스 컨테이너에서 돌린 E0 이라는 표시다.
+//   E0s 를 컨테이너에서 돌릴 때 환경 차이가 결과를 바꾸는지 보는 대조군이다
+// E0s 는 E0 에 시안 스냅숏(design/snapshot.json)만 더한다. 스킬도 검사기도 설정도 없다.
+//   E1n 세 회차도 첫 검사에서 모두 통과했다. 셋 다 생성 전에 스냅숏의 좌표를 읽었다.
+//   스냅숏의 높이(보조 버튼 38, 주요·비활성 36)가 테두리 실수를 막았는지 이 조건에서 잰다
 // E1·E1b·E1n 만 받는 것
 //   .claude/skills/verifront-check/   스킬
 //   verifront.config.json, design/snapshot.json
@@ -42,8 +47,8 @@ const STRIP_E1N: Record<string, [string, string][]> = {
   ],
 };
 const [cond, dirArg] = process.argv.slice(2);
-if (!['E0', 'E1', 'E1b', 'E1n'].includes(cond ?? '') || !dirArg) {
-  console.error('사용법: npx tsx scripts/make-workspace.ts E0|E1|E1b|E1n <폴더>');
+if (!['E0', 'E0c', 'E0s', 'E1', 'E1b', 'E1n'].includes(cond ?? '') || !dirArg) {
+  console.error('사용법: npx tsx scripts/make-workspace.ts E0|E0c|E0s|E1|E1b|E1n <폴더>');
   process.exit(2);
 }
 if (!fs.existsSync(path.join(repo, 'skills/verifront-check/SKILL.md'))) {
@@ -104,11 +109,16 @@ ${spec.trimEnd()}
 
 for (const f of ['tokens.json', 'tokens-space.json']) fs.copyFileSync(path.join(exp, f), path.join(dir, f));
 
-// ── E1 만 ────────────────────────────────────────────────
+// ── 스냅숏: E0s 와 E1 계열 ────────────────────────────────
 
-if (cond === 'E1' || cond === 'E1b' || cond === 'E1n') {
+if (cond !== 'E0' && cond !== 'E0c') {
   fs.mkdirSync(path.join(dir, 'design'));
   fs.copyFileSync(snapshot, path.join(dir, 'design', 'snapshot.json'));
+}
+
+// ── E1 계열만 ────────────────────────────────────────────
+
+if (cond === 'E1' || cond === 'E1b' || cond === 'E1n') {
   fs.writeFileSync(
     path.join(dir, 'verifront.config.json'),
     JSON.stringify({ tokens: ['tokens.json', 'tokens-space.json'], design: { snapshot: 'design/snapshot.json', frame: 'card-list' } }, null, 2) + '\n',

@@ -8,7 +8,8 @@
     "commit": "f9dea0f",
     "toolCalls": 8,
     "verifrontRuns": 1,
-    "skillLoaded": true
+    "skillLoaded": true,
+    "snapshotRead": true
   },
   "run2": {
     "models": [
@@ -19,7 +20,8 @@
     "commit": "f9dea0f",
     "toolCalls": 8,
     "verifrontRuns": 1,
-    "skillLoaded": true
+    "skillLoaded": true,
+    "snapshotRead": true
   },
   "run3": {
     "models": [
@@ -29,7 +31,8 @@
     "ended": "2026-10-21T12:07:39.118Z",
     "commit": "f9dea0f",
     "toolCalls": 9,
-    "verifrontRuns": 2,
-    "skillLoaded": true
+    "verifrontRuns": 1,
+    "skillLoaded": true,
+    "snapshotRead": true
   }
 }

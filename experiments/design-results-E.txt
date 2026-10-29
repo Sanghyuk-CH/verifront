@@ -8,6 +8,12 @@
 | E01  | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
 | E02  | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
 | E03  | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E0c1 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E0c2 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E0c3 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E0s1 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E0s2 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
+| E0s3 | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
 | E11  | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
 | E12  | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
 | E13  | 33 | 18 | 12   | 3  | 0   | 0    | 0       |
@@ -22,6 +28,12 @@
 | E01  | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
 | E02  | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
 | E03  | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
+| E0c1 | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
+| E0c2 | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
+| E0c3 | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
+| E0s1 | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
+| E0s2 | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
+| E0s3 | 68 | 52 | 16   | 0           | 0         | 0         | 0            | 76.5%  |
 | E11  | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
 | E12  | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
 | E13  | 68 | 68 | 0    | 0           | 0         | 0         | 0            | 100.0% |
@@ -38,6 +50,12 @@
 | E01  | 68   | 100.0% | 76.5%  | 16              |
 | E02  | 68   | 100.0% | 76.5%  | 16              |
 | E03  | 68   | 100.0% | 100.0% | 0               |
+| E0c1 | 68   | 100.0% | 76.5%  | 16              |
+| E0c2 | 68   | 100.0% | 76.5%  | 16              |
+| E0c3 | 68   | 100.0% | 76.5%  | 16              |
+| E0s1 | 68   | 100.0% | 76.5%  | 16              |
+| E0s2 | 68   | 100.0% | 100.0% | 0               |
+| E0s3 | 68   | 100.0% | 76.5%  | 16              |
 | E11  | 68   | 100.0% | 100.0% | 0               |
 | E12  | 68   | 100.0% | 100.0% | 0               |
 | E13  | 68   | 100.0% | 100.0% | 0               |
@@ -52,6 +70,12 @@
 | E01  | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
 | E02  | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
 | E03  | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E0c1 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E0c2 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E0c3 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E0s1 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E0s2 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
+| E0s3 | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
 | E11  | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
 | E12  | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
 | E13  | 38 | 38 | 0    | 0           | 0         | 0             | 0       | 0            | 100.0% |
@@ -64,6 +88,8 @@
 | 조건  | 여백 시안 일치율 | 여백 스케일 통과 · 시안 불일치 | 색 시안 일치율 | wrong-token (여백+색) |
 |-----|-----------|--------------------|----------|--------------------|
 | E0  | 84.3%     | 32                 | 100.0%   | 0                  |
+| E0c | 76.5%     | 48                 | 100.0%   | 0                  |
+| E0s | 84.3%     | 32                 | 100.0%   | 0                  |
 | E1  | 100.0%    | 0                  | 100.0%   | 0                  |
 | E1n | 100.0%    | 0                  | 100.0%   | 0                  |
 
@@ -75,6 +101,8 @@
 | 조건  | 세 회차가 다 잰 자리 | 세 회차가 같은 자리 | 칸   | 최소 불일치 칸 | 어떤 시안에도 최대 일치율 |
 |-----|--------------|-------------|-----|----------|----------------|
 | E0  | 68           | 52          | 204 | 16       | 92.2%          |
+| E0c | 68           | 68          | 204 | 0        | 100.0%         |
+| E0s | 68           | 52          | 204 | 16       | 92.2%          |
 | E1  | 68           | 68          | 204 | 0        | 100.0%         |
 | E1n | 68           | 68          | 204 | 0        | 100.0%         |
 
@@ -98,4 +126,25 @@
 | inset-right Card list / Card#3 / Actions / Button/Secondary ▸ Label  | 17px | 17px | 16px |
 | inset-top Card list / Card#3 / Actions / Button/Secondary ▸ Label    | 9px  | 9px  | 8px  |
 | inset-bottom Card list / Card#3 / Actions / Button/Secondary ▸ Label | 9px  | 9px  | 8px  |
+
+### E0s — 회차마다 값이 다른 자리
+
+| 자리                                                                   | E0s1 | E0s2 | E0s3 |
+|----------------------------------------------------------------------|------|------|------|
+| inset-left Card list / Card#1 / Actions / Button/Primary ▸ Label     | 17px | 16px | 17px |
+| inset-right Card list / Card#1 / Actions / Button/Primary ▸ Label    | 17px | 16px | 17px |
+| inset-top Card list / Card#1 / Actions / Button/Primary ▸ Label      | 9px  | 8px  | 9px  |
+| inset-bottom Card list / Card#1 / Actions / Button/Primary ▸ Label   | 9px  | 8px  | 9px  |
+| inset-left Card list / Card#2 / Actions / Button/Primary ▸ Label     | 17px | 16px | 17px |
+| inset-right Card list / Card#2 / Actions / Button/Primary ▸ Label    | 17px | 16px | 17px |
+| inset-top Card list / Card#2 / Actions / Button/Primary ▸ Label      | 9px  | 8px  | 9px  |
+| inset-bottom Card list / Card#2 / Actions / Button/Primary ▸ Label   | 9px  | 8px  | 9px  |
+| inset-left Card list / Card#3 / Actions / Button/Primary ▸ Label     | 17px | 16px | 17px |
+| inset-right Card list / Card#3 / Actions / Button/Primary ▸ Label    | 17px | 16px | 17px |
+| inset-top Card list / Card#3 / Actions / Button/Primary ▸ Label      | 9px  | 8px  | 9px  |
+| inset-bottom Card list / Card#3 / Actions / Button/Primary ▸ Label   | 9px  | 8px  | 9px  |
+| inset-left Card list / Card#3 / Actions / Button/Secondary ▸ Label   | 17px | 16px | 17px |
+| inset-right Card list / Card#3 / Actions / Button/Secondary ▸ Label  | 17px | 16px | 17px |
+| inset-top Card list / Card#3 / Actions / Button/Secondary ▸ Label    | 9px  | 8px  | 9px  |
+| inset-bottom Card list / Card#3 / Actions / Button/Secondary ▸ Label | 9px  | 8px  | 9px  |
 
