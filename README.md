@@ -220,3 +220,4 @@ npm test
 2. [검사기가 못 본 색을 브라우저에게 물었다](https://tomorrow-whatever.tistory.com/4) — 런타임 검사. 여섯 번째와 그 반대 방향.
 3. [16px 두 개를 붙였더니 16px이 됐다](https://tomorrow-whatever.tistory.com/5) — 간격 검사. 선언된 값과 화면의 여백이 갈라지는 자리.
 4. [여백이 전부 토큰이었는데 시안과 달랐다](https://tomorrow-whatever.tistory.com/6) — 시안 대조. 스케일 검사는 자리를 묻지 않는다.
+5. [검사기를 쥐여줬더니 시안의 2px까지 따라 했다](https://tomorrow-whatever.tistory.com/7) — 생성 루프. 루프는 돌지 않았고 차이는 생성 전에 났다.
